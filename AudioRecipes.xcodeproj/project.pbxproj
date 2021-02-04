@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,30 @@
 		4F8174CA25CC2C750023383D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174C925CC2C750023383D /* ContentView.swift */; };
 		4F8174CC25CC2C750023383D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8174CB25CC2C750023383D /* Assets.xcassets */; };
 		4F8174CF25CC2C750023383D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8174CE25CC2C750023383D /* Preview Assets.xcassets */; };
+		4F8174D925CC2CED0023383D /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8174D825CC2CED0023383D /* AudioKit */; };
+		4F8174DD25CC2D0C0023383D /* AudioKitUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4F8174DC25CC2D0C0023383D /* AudioKitUI */; };
+		4F8174E025CC2D730023383D /* Conductor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174DF25CC2D730023383D /* Conductor.swift */; };
+		4F8174EA25CC2DF10023383D /* TapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174E925CC2DF10023383D /* TapView.swift */; };
+		4F8174ED25CC2E110023383D /* AmplitudeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174EC25CC2E110023383D /* AmplitudeView.swift */; };
+		4F8174F025CC2E210023383D /* AmplitudeExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174EF25CC2E210023383D /* AmplitudeExampleView.swift */; };
+		4F8174F325CC2E380023383D /* FilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174F225CC2E380023383D /* FilterView.swift */; };
+		4F8174F625CC2E460023383D /* FilterExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174F525CC2E460023383D /* FilterExampleView.swift */; };
+		4F8174F925CC2E620023383D /* SpectrogramView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174F825CC2E620023383D /* SpectrogramView.swift */; };
+		4F8174FC25CC2E700023383D /* SpectrogramExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174FB25CC2E700023383D /* SpectrogramExampleView.swift */; };
+		4F8174FF25CC2E880023383D /* SpectrumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174FE25CC2E880023383D /* SpectrumView.swift */; };
+		4F81750225CC2E9A0023383D /* SpectrumPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81750125CC2E9A0023383D /* SpectrumPopupView.swift */; };
+		4F81750525CC2EA90023383D /* CircleCursorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81750425CC2EA90023383D /* CircleCursorView.swift */; };
+		4F81750825CC2EB90023383D /* SpectrumExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81750725CC2EB90023383D /* SpectrumExampleView.swift */; };
+		4F81750B25CC2EEA0023383D /* WavetableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81750A25CC2EEA0023383D /* WavetableView.swift */; };
+		4F81750E25CC2EFD0023383D /* WavetableExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81750D25CC2EFD0023383D /* WavetableExampleView.swift */; };
+		4F81751125CC2F290023383D /* FFTView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81751025CC2F290023383D /* FFTView.swift */; };
+		4F81751425CC2F360023383D /* FFTExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81751325CC2F360023383D /* FFTExampleView.swift */; };
+		4F81751825CC2F6B0023383D /* MorphableShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81751725CC2F6B0023383D /* MorphableShape.swift */; };
+		4F81751B25CC2F7C0023383D /* ColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81751A25CC2F7C0023383D /* ColorHelpers.swift */; };
+		4F81752025CC2FCA0023383D /* customosc.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F81751F25CC2FCA0023383D /* customosc.c */; };
+		4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752225CC2FF70023383D /* CustomOscillator.swift */; };
+		4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */; };
+		4F81752A25CC32080023383D /* AnyKindOfWay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F81752925CC32080023383D /* AnyKindOfWay.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +44,29 @@
 		4F8174CB25CC2C750023383D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F8174CE25CC2C750023383D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		4F8174D025CC2C750023383D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F8174DF25CC2D730023383D /* Conductor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Conductor.swift; sourceTree = "<group>"; };
+		4F8174E925CC2DF10023383D /* TapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapView.swift; sourceTree = "<group>"; };
+		4F8174EC25CC2E110023383D /* AmplitudeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeView.swift; sourceTree = "<group>"; };
+		4F8174EF25CC2E210023383D /* AmplitudeExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmplitudeExampleView.swift; sourceTree = "<group>"; };
+		4F8174F225CC2E380023383D /* FilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterView.swift; sourceTree = "<group>"; };
+		4F8174F525CC2E460023383D /* FilterExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterExampleView.swift; sourceTree = "<group>"; };
+		4F8174F825CC2E620023383D /* SpectrogramView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramView.swift; sourceTree = "<group>"; };
+		4F8174FB25CC2E700023383D /* SpectrogramExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrogramExampleView.swift; sourceTree = "<group>"; };
+		4F8174FE25CC2E880023383D /* SpectrumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumView.swift; sourceTree = "<group>"; };
+		4F81750125CC2E9A0023383D /* SpectrumPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumPopupView.swift; sourceTree = "<group>"; };
+		4F81750425CC2EA90023383D /* CircleCursorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleCursorView.swift; sourceTree = "<group>"; };
+		4F81750725CC2EB90023383D /* SpectrumExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectrumExampleView.swift; sourceTree = "<group>"; };
+		4F81750A25CC2EEA0023383D /* WavetableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableView.swift; sourceTree = "<group>"; };
+		4F81750D25CC2EFD0023383D /* WavetableExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableExampleView.swift; sourceTree = "<group>"; };
+		4F81751025CC2F290023383D /* FFTView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTView.swift; sourceTree = "<group>"; };
+		4F81751325CC2F360023383D /* FFTExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FFTExampleView.swift; sourceTree = "<group>"; };
+		4F81751725CC2F6B0023383D /* MorphableShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MorphableShape.swift; sourceTree = "<group>"; };
+		4F81751A25CC2F7C0023383D /* ColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelpers.swift; sourceTree = "<group>"; };
+		4F81751E25CC2FCA0023383D /* customosc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = customosc.h; sourceTree = "<group>"; };
+		4F81751F25CC2FCA0023383D /* customosc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = customosc.c; sourceTree = "<group>"; };
+		4F81752225CC2FF70023383D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
+		4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
+		4F81752925CC32080023383D /* AnyKindOfWay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AnyKindOfWay.mp3; path = ../../../../../../../Desktop/AnyKindOfWay.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +74,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F8174DD25CC2D0C0023383D /* AudioKitUI in Frameworks */,
+				4F8174D925CC2CED0023383D /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,8 +101,12 @@
 		4F8174C625CC2C750023383D /* AudioRecipes */ = {
 			isa = PBXGroup;
 			children = (
+				4F81752925CC32080023383D /* AnyKindOfWay.mp3 */,
 				4F8174C725CC2C750023383D /* AudioRecipesApp.swift */,
 				4F8174C925CC2C750023383D /* ContentView.swift */,
+				4F8174DF25CC2D730023383D /* Conductor.swift */,
+				4F81751D25CC2F900023383D /* CustomOscillator */,
+				4F8174E225CC2DA20023383D /* Views */,
 				4F8174CB25CC2C750023383D /* Assets.xcassets */,
 				4F8174D025CC2C750023383D /* Info.plist */,
 				4F8174CD25CC2C750023383D /* Preview Content */,
@@ -67,6 +120,97 @@
 				4F8174CE25CC2C750023383D /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		4F8174E225CC2DA20023383D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4F81751625CC2F5A0023383D /* Helpers */,
+				4F8174E825CC2DDB0023383D /* WavetableView */,
+				4F8174E725CC2DD20023383D /* SpectrumView */,
+				4F8174E625CC2DC80023383D /* SpectrogramView */,
+				4F8174E525CC2DBC0023383D /* FFTView */,
+				4F8174E425CC2DB40023383D /* FilterView */,
+				4F8174E325CC2DAB0023383D /* AmplitudeView */,
+				4F8174E925CC2DF10023383D /* TapView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		4F8174E325CC2DAB0023383D /* AmplitudeView */ = {
+			isa = PBXGroup;
+			children = (
+				4F8174EC25CC2E110023383D /* AmplitudeView.swift */,
+				4F8174EF25CC2E210023383D /* AmplitudeExampleView.swift */,
+			);
+			path = AmplitudeView;
+			sourceTree = "<group>";
+		};
+		4F8174E425CC2DB40023383D /* FilterView */ = {
+			isa = PBXGroup;
+			children = (
+				4F8174F225CC2E380023383D /* FilterView.swift */,
+				4F8174F525CC2E460023383D /* FilterExampleView.swift */,
+			);
+			path = FilterView;
+			sourceTree = "<group>";
+		};
+		4F8174E525CC2DBC0023383D /* FFTView */ = {
+			isa = PBXGroup;
+			children = (
+				4F81751025CC2F290023383D /* FFTView.swift */,
+				4F81751325CC2F360023383D /* FFTExampleView.swift */,
+			);
+			path = FFTView;
+			sourceTree = "<group>";
+		};
+		4F8174E625CC2DC80023383D /* SpectrogramView */ = {
+			isa = PBXGroup;
+			children = (
+				4F8174F825CC2E620023383D /* SpectrogramView.swift */,
+				4F8174FB25CC2E700023383D /* SpectrogramExampleView.swift */,
+			);
+			path = SpectrogramView;
+			sourceTree = "<group>";
+		};
+		4F8174E725CC2DD20023383D /* SpectrumView */ = {
+			isa = PBXGroup;
+			children = (
+				4F8174FE25CC2E880023383D /* SpectrumView.swift */,
+				4F81750125CC2E9A0023383D /* SpectrumPopupView.swift */,
+				4F81750425CC2EA90023383D /* CircleCursorView.swift */,
+				4F81750725CC2EB90023383D /* SpectrumExampleView.swift */,
+			);
+			path = SpectrumView;
+			sourceTree = "<group>";
+		};
+		4F8174E825CC2DDB0023383D /* WavetableView */ = {
+			isa = PBXGroup;
+			children = (
+				4F81750A25CC2EEA0023383D /* WavetableView.swift */,
+				4F81750D25CC2EFD0023383D /* WavetableExampleView.swift */,
+			);
+			path = WavetableView;
+			sourceTree = "<group>";
+		};
+		4F81751625CC2F5A0023383D /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				4F81751725CC2F6B0023383D /* MorphableShape.swift */,
+				4F81751A25CC2F7C0023383D /* ColorHelpers.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		4F81751D25CC2F900023383D /* CustomOscillator */ = {
+			isa = PBXGroup;
+			children = (
+				4F81751E25CC2FCA0023383D /* customosc.h */,
+				4F81751F25CC2FCA0023383D /* customosc.c */,
+				4F81752225CC2FF70023383D /* CustomOscillator.swift */,
+				4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */,
+			);
+			path = CustomOscillator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -85,6 +229,10 @@
 			dependencies = (
 			);
 			name = AudioRecipes;
+			packageProductDependencies = (
+				4F8174D825CC2CED0023383D /* AudioKit */,
+				4F8174DC25CC2D0C0023383D /* AudioKitUI */,
+			);
 			productName = AudioRecipes;
 			productReference = 4F8174C425CC2C750023383D /* AudioRecipes.app */;
 			productType = "com.apple.product-type.application";
@@ -100,6 +248,7 @@
 				TargetAttributes = {
 					4F8174C325CC2C750023383D = {
 						CreatedOnToolsVersion = 12.4;
+						LastSwiftMigration = 1240;
 					};
 				};
 			};
@@ -112,6 +261,10 @@
 				Base,
 			);
 			mainGroup = 4F8174BB25CC2C750023383D;
+			packageReferences = (
+				4F8174D725CC2CED0023383D /* XCRemoteSwiftPackageReference "AudioKit" */,
+				4F8174DB25CC2D0C0023383D /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+			);
 			productRefGroup = 4F8174C525CC2C750023383D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -128,6 +281,7 @@
 			files = (
 				4F8174CF25CC2C750023383D /* Preview Assets.xcassets in Resources */,
 				4F8174CC25CC2C750023383D /* Assets.xcassets in Resources */,
+				4F81752A25CC32080023383D /* AnyKindOfWay.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,8 +292,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F81750225CC2E9A0023383D /* SpectrumPopupView.swift in Sources */,
+				4F8174F325CC2E380023383D /* FilterView.swift in Sources */,
+				4F81750825CC2EB90023383D /* SpectrumExampleView.swift in Sources */,
+				4F81751825CC2F6B0023383D /* MorphableShape.swift in Sources */,
+				4F81751125CC2F290023383D /* FFTView.swift in Sources */,
+				4F8174FC25CC2E700023383D /* SpectrogramExampleView.swift in Sources */,
+				4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */,
+				4F8174EA25CC2DF10023383D /* TapView.swift in Sources */,
+				4F81751425CC2F360023383D /* FFTExampleView.swift in Sources */,
+				4F8174FF25CC2E880023383D /* SpectrumView.swift in Sources */,
+				4F81750B25CC2EEA0023383D /* WavetableView.swift in Sources */,
+				4F81750E25CC2EFD0023383D /* WavetableExampleView.swift in Sources */,
+				4F81752025CC2FCA0023383D /* customosc.c in Sources */,
 				4F8174CA25CC2C750023383D /* ContentView.swift in Sources */,
+				4F8174E025CC2D730023383D /* Conductor.swift in Sources */,
+				4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */,
 				4F8174C825CC2C750023383D /* AudioRecipesApp.swift in Sources */,
+				4F8174ED25CC2E110023383D /* AmplitudeView.swift in Sources */,
+				4F81750525CC2EA90023383D /* CircleCursorView.swift in Sources */,
+				4F8174F025CC2E210023383D /* AmplitudeExampleView.swift in Sources */,
+				4F8174F925CC2E620023383D /* SpectrogramView.swift in Sources */,
+				4F8174F625CC2E460023383D /* FilterExampleView.swift in Sources */,
+				4F81751B25CC2F7C0023383D /* ColorHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,6 +442,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AudioRecipes/Preview Content\"";
 				DEVELOPMENT_TEAM = L2FL95P32D;
@@ -279,6 +455,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.MattPfeiffer.AudioRecipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -289,6 +466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AudioRecipes/Preview Content\"";
 				DEVELOPMENT_TEAM = L2FL95P32D;
@@ -328,6 +506,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4F8174D725CC2CED0023383D /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				branch = "v5-develop";
+				kind = branch;
+			};
+		};
+		4F8174DB25CC2D0C0023383D /* XCRemoteSwiftPackageReference "AudioKitUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKitUI.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4F8174D825CC2CED0023383D /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F8174D725CC2CED0023383D /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
+		4F8174DC25CC2D0C0023383D /* AudioKitUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F8174DB25CC2D0C0023383D /* XCRemoteSwiftPackageReference "AudioKitUI" */;
+			productName = AudioKitUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4F8174BC25CC2C750023383D /* Project object */;
 }
