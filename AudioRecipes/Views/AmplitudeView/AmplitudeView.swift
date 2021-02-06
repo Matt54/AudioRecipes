@@ -35,7 +35,7 @@ struct AmplitudeView: View {
     @State var stereoMode : StereoMode = .center
     @State var numberOfSegments: Int
     
-    @State var colorType: ColorType = .gradient(gradient: Gradient(colors: [.red, .yellow, .green]))
+    @State var fillType: FillType = .gradient(gradient: Gradient(colors: [.red, .yellow, .green]))
     
     init(_ node: Node,stereoMode : StereoMode = .center, numberOfSegments: Int = 20){
         self.node = node
@@ -45,13 +45,13 @@ struct AmplitudeView: View {
     init(_ node: Node, color: Color,stereoMode : StereoMode = .center, numberOfSegments: Int = 20){
         self.node = node
         self._stereoMode = State(initialValue: stereoMode)
-        self._colorType = State(initialValue: .solid(color: color))
+        self._fillType = State(initialValue: .solid(color: color))
         self._numberOfSegments = State(initialValue: numberOfSegments)
     }
     init(_ node: Node, colors: Gradient,stereoMode : StereoMode = .center, numberOfSegments: Int = 20){
         self.node = node
         self._stereoMode = State(initialValue: stereoMode)
-        self._colorType = State(initialValue: .gradient(gradient: colors))
+        self._fillType = State(initialValue: .gradient(gradient: colors))
         self._numberOfSegments = State(initialValue: numberOfSegments)
     }
     
@@ -66,7 +66,7 @@ struct AmplitudeView: View {
                 // colored rectangle in the back
                 if !isClipping {
                     Rectangle()
-                        .flexableFill(colorType: colorType)
+                        .flexableFill(fillType: fillType)
                 } else {
                     Rectangle()
                         .fill(Color.red)
@@ -129,10 +129,8 @@ struct AmplitudeView: View {
 
 extension Shape {
     @ViewBuilder
-    func flexableFill(colorType: ColorType) -> some View {
-        switch colorType {
-        case .nothing:
-            self
+    func flexableFill(fillType: FillType) -> some View {
+        switch fillType {
         case .solid(let color):
             self.fill(color)
         case .gradient(let gradient):
@@ -141,17 +139,10 @@ extension Shape {
     }
 }
 
-enum ColorType {
-    case nothing
+enum FillType {
     case solid(color: Color)
     case gradient(gradient: Gradient)
 }
-
-/*enum StereoSetting {
-    case center
-    case left
-    case right
-}*/
 
 struct AmplitudeView_Previews: PreviewProvider {
     static var previews: some View {

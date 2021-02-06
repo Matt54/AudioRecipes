@@ -43,7 +43,7 @@ class Conductor : ObservableObject{
     
     let secondCombinationMixer : Mixer
     
-    let filter : LowPassFilter
+    let filter : LowPassButterworthFilter
     
     /// limiter to prevent excessive volume at the output - just in case, it's the music producer in me :)
     let outputLimiter : PeakLimiter
@@ -91,7 +91,7 @@ class Conductor : ObservableObject{
         
         panner = Panner(combinationMixer)
         secondCombinationMixer = Mixer(panner)
-        filter = LowPassFilter(secondCombinationMixer)
+        filter = LowPassButterworthFilter(secondCombinationMixer)
         
         // route the silent Mixer to the limiter (you must always route the audio chain to AudioKit.output)
         outputLimiter = PeakLimiter(filter)
@@ -112,7 +112,7 @@ class Conductor : ObservableObject{
         osc.frequency = 500
         silentMicMixer.volume = 0.0
         filter.cutoffFrequency = 20_000
-        filter.resonance = 10
+        //filter.resonance = 10
         
         waveforms = createInterpolatedTables(inputTables: defaultWaves)
         calculateActualWaveTable(Int(wavePosition))

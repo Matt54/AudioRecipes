@@ -35,9 +35,11 @@
 		4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752225CC2FF70023383D /* CustomOscillator.swift */; };
 		4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */; };
 		4F81752A25CC32080023383D /* AnyKindOfWay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F81752925CC32080023383D /* AnyKindOfWay.mp3 */; };
+		4F81752E25CC39750023383D /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 4F81752D25CC39750023383D /* Numerics */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F1E271825CD895200A46D89 /* AudioKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioKit; path = ../../../../../../Documents/GitHub/AudioKit; sourceTree = "<group>"; };
 		4F8174C425CC2C750023383D /* AudioRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F8174C725CC2C750023383D /* AudioRecipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecipesApp.swift; sourceTree = "<group>"; };
 		4F8174C925CC2C750023383D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 		4F81752225CC2FF70023383D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
 		4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
 		4F81752925CC32080023383D /* AnyKindOfWay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AnyKindOfWay.mp3; path = ../../../../../../../Desktop/AnyKindOfWay.mp3; sourceTree = "<group>"; };
+		4FA695A025CCB95B008904D6 /* AudioKitUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioKitUI; path = ../../../../../../Documents/GitHub/AudioKitUI; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +78,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F8174DD25CC2D0C0023383D /* AudioKitUI in Frameworks */,
+				4F81752E25CC39750023383D /* Numerics in Frameworks */,
 				4F8174D925CC2CED0023383D /* AudioKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,6 +89,8 @@
 		4F8174BB25CC2C750023383D = {
 			isa = PBXGroup;
 			children = (
+				4F1E271825CD895200A46D89 /* AudioKit */,
+				4FA695A025CCB95B008904D6 /* AudioKitUI */,
 				4F8174C625CC2C750023383D /* AudioRecipes */,
 				4F8174C525CC2C750023383D /* Products */,
 			);
@@ -232,6 +238,7 @@
 			packageProductDependencies = (
 				4F8174D825CC2CED0023383D /* AudioKit */,
 				4F8174DC25CC2D0C0023383D /* AudioKitUI */,
+				4F81752D25CC39750023383D /* Numerics */,
 			);
 			productName = AudioRecipes;
 			productReference = 4F8174C425CC2C750023383D /* AudioRecipes.app */;
@@ -264,6 +271,7 @@
 			packageReferences = (
 				4F8174D725CC2CED0023383D /* XCRemoteSwiftPackageReference "AudioKit" */,
 				4F8174DB25CC2D0C0023383D /* XCRemoteSwiftPackageReference "AudioKitUI" */,
+				4F81752C25CC39750023383D /* XCRemoteSwiftPackageReference "swift-numerics" */,
 			);
 			productRefGroup = 4F8174C525CC2C750023383D /* Products */;
 			projectDirPath = "";
@@ -524,6 +532,14 @@
 				kind = branch;
 			};
 		};
+		4F81752C25CC39750023383D /* XCRemoteSwiftPackageReference "swift-numerics" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-numerics.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.8;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -536,6 +552,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4F8174DB25CC2D0C0023383D /* XCRemoteSwiftPackageReference "AudioKitUI" */;
 			productName = AudioKitUI;
+		};
+		4F81752D25CC39750023383D /* Numerics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4F81752C25CC39750023383D /* XCRemoteSwiftPackageReference "swift-numerics" */;
+			productName = Numerics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
