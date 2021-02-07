@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AudioKit",
+        "repositoryURL": "https://github.com/AudioKit/AudioKit.git",
+        "state": {
+          "branch": "v5-develop",
+          "revision": "a166937993682947f3c5abd856b4c52014411a2e",
+          "version": null
+        }
+      },
+      {
+        "package": "AudioKitUI",
+        "repositoryURL": "https://github.com/AudioKit/AudioKitUI.git",
+        "state": {
+          "branch": "main",
+          "revision": "a78a310adb4f32508c956acd1e8fa729bda1939f",
+          "version": null
+        }
+      },
+      {
+        "package": "swift-numerics",
+        "repositoryURL": "https://github.com/apple/swift-numerics.git",
+        "state": {
+          "branch": null,
+          "revision": "6b24333510e9044cf4716a07bed65eeed6bc6393",
+          "version": "0.0.8"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
