@@ -1,4 +1,5 @@
 import AudioKit
+import AudioKitUI
 import SwiftUI
 
 // MARK: FFTDataReadings
@@ -6,6 +7,7 @@ import SwiftUI
 struct FFTDataReadings {
     var maxItems: Int
     var queue = Queue()
+    @Environment(\.isPreview) var isPreview
     
     mutating func pushToQueue(points: [CGPoint]) {
         queue.enqueue(element: points)
@@ -16,11 +18,7 @@ struct FFTDataReadings {
     
     init(maxItems: Int) {
         self.maxItems = maxItems
-        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
-            queue = createTestData()
-        } else {
-            queue = createEmptyData()
-        }
+        queue = isPreview ? createTestData() : createEmptyData()
     }
     
     func createEmptyData() -> Queue {
