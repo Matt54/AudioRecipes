@@ -3,29 +3,45 @@ import SwiftUI
 
 // MARK: SpectrumModel
 class SpectrumModel: ObservableObject {
-    static let numberOfPoints = 256
+    @Environment(\.isPreview) var isPreview
+    @Published var amplitudes: [CGFloat] = []
+    @Published var frequencies: [CGFloat] = []
     
-    @Published var amplitudes: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
-    @Published var frequencies: [CGFloat] = Array(repeating: 0.0, count: numberOfPoints)
     
-    var nodeTap: FFTTap!
+    private var node: Node?
+    private var sampleRate : double_t = 44100
+    private var nodeTap: FFTTap!
     private var FFT_SIZE = 2048
-    let sampleRate : double_t = 44100
-    var node: Node?
-    
-    var minDeadBand: CGFloat = 40.0
-    var maxDeadBand: CGFloat = 40.0
-    var currentMidAmp: CGFloat = 100.0
-    
-    var minFreq = 30.0
-    var maxFreq = 20000.0
-    
-    var minAmp: CGFloat = -1.0
-    var maxAmp: CGFloat = -1_000.0
+    private var minDeadBand: CGFloat = 40.0
+    private var maxDeadBand: CGFloat = 40.0
+    private var currentMidAmp: CGFloat = 100.0
+    var minFreq: CGFloat = 30.0
+    var maxFreq: CGFloat = 20000.0
+    private var minAmp: CGFloat = -1.0
+    private var maxAmp: CGFloat = -1_000.0
     var topAmp: CGFloat = -60.0
     var bottomAmp: CGFloat = -216.0
-    var ampDisplacement: CGFloat = 120.0 / 2.0
-    let maxSpan: CGFloat = 170
+    private var ampDisplacement: CGFloat = 120.0 / 2.0
+    private let maxSpan: CGFloat = 170
+    
+    init() {
+        if isPreview {
+            createTestData()
+        }
+    }
+    
+    func createTestData() {
+        var fakeFrequencies : [CGFloat] = []
+        var fakeAmplitudes : [CGFloat] = []
+        for i in 0..<255 {
+            let frequency = CGFloat(sampleRate * 0.5) * CGFloat(i*2) / CGFloat(512 * 2)
+            let amplitude = CGFloat.random(in: -175...(-70))
+            fakeFrequencies.append(frequency)
+            fakeAmplitudes.append(amplitude)
+        }
+        frequencies = fakeFrequencies
+        amplitudes = fakeAmplitudes
+    }
     
     func updateNode(_ node: Node) {
         if node !== self.node {
@@ -60,21 +76,21 @@ class SpectrumModel: ObservableObject {
         let real = fftFloats.indices.compactMap{$0 % 2 == 0 ? fftFloats[$0] : nil }
         let imaginary = fftFloats.indices.compactMap{$0 % 2 != 0 ? fftFloats[$0] : nil }
         
-        var maxSquared : Float = 0.0
-        var frequencyChosen = 0.0
+        var maxSquared : CGFloat = 0.0
+        var frequencyChosen : CGFloat = 0.0
         
         var tempAmplitudes : [CGFloat] = []
         var tempFrequencies : [CGFloat] = []
         
-        var minAmplitude = -1.0
-        var maxAmplitude = -1_000.0
+        var minAmplitude: CGFloat = -1.0
+        var maxAmplitude: CGFloat = -1_000.0
         
         for i in 0..<real.count {
             
             // I don't love doing this for every element
-            let frequencyForBin = sampleRate * 0.5 * Double(i*2) / Double(real.count * 2)
+            let frequencyForBin: CGFloat = CGFloat(sampleRate) * 0.5 * CGFloat(i*2) / CGFloat(real.count * 2)
             
-            var squared = real[i] * real[i] + imaginary[i] * imaginary[i]
+            var squared : CGFloat = CGFloat(real[i] * real[i] + imaginary[i] * imaginary[i])
             
             if frequencyForBin > maxFreq {
                 continue
@@ -110,7 +126,7 @@ class SpectrumModel: ObservableObject {
                 frequencyChosen = frequencyForBin
             }
             
-            let amplitude = Double(10 * log10(4 * (squared)/(Float(FFT_SIZE) * Float(FFT_SIZE))))
+            let amplitude = CGFloat(10 * log10(4 * squared/(CGFloat(FFT_SIZE) * CGFloat(FFT_SIZE))))
 
             if amplitude > maxAmplitude {
                 maxAmplitude = amplitude
@@ -118,17 +134,18 @@ class SpectrumModel: ObservableObject {
                 minAmplitude = amplitude
             }
             
-            tempAmplitudes.append(CGFloat(amplitude))
-            tempFrequencies.append(CGFloat(frequencyChosen))
+            tempAmplitudes.append(amplitude)
+            tempFrequencies.append(frequencyChosen)
         }
         
         amplitudes = tempAmplitudes
         frequencies = tempFrequencies
-        minAmp = CGFloat(minAmplitude)
-        maxAmp = CGFloat(maxAmplitude)
+        minAmp = minAmplitude
+        maxAmp = maxAmplitude
     }
     
-    /// Figures out what we should use for the maximum and minimum amplitudes displayed - also sets a "mid" amp which the dead band lies around
+    /// Figures out what we should use for the maximum and minimum amplitudes displayed
+    /// Also sets a "mid" amp which the dead band lies around
     func determineAmplitudeBounds(){
         if maxDeadBand < abs(maxAmp - currentMidAmp) ||  minDeadBand < abs(maxAmp - currentMidAmp) {
             // place us at a new location
@@ -157,29 +174,49 @@ class SpectrumModel: ObservableObject {
 struct SpectrumView: View {
     @StateObject var spectrum = SpectrumModel()
     var node: Node
-    
-    @State var shouldPlotPoints: Bool = false
-    @State var shouldStroke: Bool = true
-    @State var shouldFill: Bool = true
-    
-    @State var backgroundColor: Color = Color.black
-    @State var plotPointColor: Color = Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8)
-    @State var strokeColor: Color = Color.white
-    @State var fillColor: Color = Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.4)
-    @State var cursorColor = Color.white
-    
-    @State var frequencyDisplayed: Double = 100.0
-    @State var amplitudeDisplayed: Double = -100.0
-    
-    @State var cursorX: Float = 0.0
-    @State var cursorY: Float = 0.0
-    @State var popupX: Float = 0.0
-    @State var popupY: Float = 0.0
+    @State var frequencyDisplayed: CGFloat = 100.0
+    @State var amplitudeDisplayed: CGFloat = -100.0
+    @State var cursorX: CGFloat = 0.0
+    @State var cursorY: CGFloat = 0.0
+    @State var popupX: CGFloat = 0.0
+    @State var popupY: CGFloat = 0.0
     @State var popupOpacity: Double = 0.0
     @State var cursorDisplayed: Bool = false
+    private var backgroundColor: Color
+    private var shouldPlotPoints: Bool
+    private var plotPointColor: Color
+    private var shouldStroke: Bool
+    private var strokeColor: Color
+    private var shouldFill: Bool
+    private var fillColor: Color
+    private var shouldAnalyzeTouch: Bool
+    private var cursorColor: Color
+    private var shouldDisplayAxisLabels: Bool
     
-    @State var shouldAnalyzeTouch: Bool = true
-    @State var shouldDisplayAxisLabels: Bool = true
+    public init(_ node: Node,
+                backgroundColor: Color = Color.black,
+                shouldPlotPoints: Bool = false,
+                plotPointColor: Color = Color(red: 0.9, green: 0.9, blue: 0.9, opacity: 0.8),
+                shouldStroke: Bool = true,
+                strokeColor: Color = Color.white,
+                shouldFill: Bool = true,
+                fillColor: Color = Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.4),
+                shouldAnalyzeTouch: Bool = true,
+                cursorColor: Color = Color.white,
+                shouldDisplayAxisLabels: Bool = true)
+    {
+        self.node = node
+        self.backgroundColor = backgroundColor
+        self.shouldPlotPoints = shouldPlotPoints
+        self.plotPointColor = plotPointColor
+        self.shouldStroke = shouldStroke
+        self.strokeColor = strokeColor
+        self.shouldFill = shouldFill
+        self.fillColor = fillColor
+        self.shouldAnalyzeTouch = shouldAnalyzeTouch
+        self.cursorColor = cursorColor
+        self.shouldDisplayAxisLabels = shouldDisplayAxisLabels
+    }
     
     public var body: some View {
         GeometryReader{ geometry in
@@ -191,24 +228,23 @@ struct SpectrumView: View {
                 .gesture(
                     DragGesture(minimumDistance: 0, coordinateSpace: .local)
                         .onChanged { value in
-                            var x: Float = Float(value.location.x > geometry.size.width ? geometry.size.width : 0.0)
+                            var x: CGFloat = value.location.x > geometry.size.width ? geometry.size.width : 0.0
                             if value.location.x > 0.0 && value.location.x < geometry.size.width {
-                                x = Float(value.location.x)
+                                x = value.location.x
                             }
-                            var y: Float = Float(value.location.y > geometry.size.height ? geometry.size.height : 0.0)
+                            var y: CGFloat = value.location.y > geometry.size.height ? geometry.size.height : 0.0
                             if value.location.y > 0.0 && value.location.y < geometry.size.height {
-                                y = Float(value.location.y)
+                                y = value.location.y
                             }
                             
                             cursorX = x
                             cursorY = y
                             
-                            popupX = x > Float(geometry.size.width / 6) ? x - Float(geometry.size.width / 16) : x + Float(geometry.size.width / 16)
-                            popupY = y > Float(geometry.size.height / 6) ? y - Float(geometry.size.width / 16) : y + Float(geometry.size.width / 16)
-                            
+                            popupX = x > geometry.size.width / 4 ? x - geometry.size.width / 8 : x + geometry.size.width / 8
+                            popupY = y > geometry.size.height / 4 ? y - geometry.size.height / 8 : y + geometry.size.height / 8
 
-                            frequencyDisplayed = Double(expMap(n: x, start1: Float(0.0), stop1: Float(geometry.size.width), start2: Float(spectrum.minFreq), stop2: Float(spectrum.maxFreq)))
-                            amplitudeDisplayed = Double(map(n: CGFloat(y), start1: 0.0, stop1: geometry.size.height, start2: spectrum.topAmp, stop2: spectrum.bottomAmp))
+                            frequencyDisplayed = x.mappedExp(from: 0...geometry.size.width, to: spectrum.minFreq...spectrum.maxFreq)
+                            amplitudeDisplayed = y.mappedInverted(from: 0...geometry.size.height, to: spectrum.bottomAmp...spectrum.topAmp)
                             
                             cursorDisplayed = true
                             popupOpacity = 1.0
@@ -224,7 +260,7 @@ struct SpectrumView: View {
                     
                     CircleCursorView(cursorColor: cursorColor)
                         .frame(width: geometry.size.width / 30, height: geometry.size.height / 30)
-                        .position(x: CGFloat(cursorX), y: CGFloat(cursorY))
+                        .position(x: cursorX, y: cursorY)
                     
                     SpectrumPopupView(frequency: $frequencyDisplayed, amplitude: $amplitudeDisplayed, colorForeground: cursorColor)
                         .overlay(
@@ -232,7 +268,7 @@ struct SpectrumView: View {
                                      .stroke(cursorColor)
                                      .shadow(color: cursorColor, radius: 3, x: 0, y: 0)
                         )
-                        .position(x: CGFloat(popupX), y: CGFloat(popupY))
+                        .position(x: popupX, y: popupY)
                 }
                 .opacity(popupOpacity)
                 .animation(.default)
@@ -243,12 +279,12 @@ struct SpectrumView: View {
     
     private func createCrossLines(width: CGFloat, height: CGFloat) -> some View {
         var horizontalPoints : [CGPoint] = []
-        horizontalPoints.append(CGPoint(x: 0.0,y: Double(cursorY)))
-        horizontalPoints.append(CGPoint(x: Double(width),y: Double(cursorY)))
+        horizontalPoints.append(CGPoint(x: 0.0,y: cursorY))
+        horizontalPoints.append(CGPoint(x: width,y: cursorY))
         
         var verticalPoints : [CGPoint] = []
-        verticalPoints.append(CGPoint(x: Double(cursorX),y: 0.0))
-        verticalPoints.append(CGPoint(x: Double(cursorX),y: Double(height)))
+        verticalPoints.append(CGPoint(x: cursorX,y: 0.0))
+        verticalPoints.append(CGPoint(x: cursorX,y: height))
         return ZStack{
             Path{ path in
                 path.addLines(horizontalPoints)
@@ -280,13 +316,13 @@ struct SpectrumView: View {
     
     func createSpectrumCircles(width: CGFloat, height: CGFloat) -> some View {
         
-        var mappedPoints = Array(repeating: CGPoint(x: 0.0, y: 0.0), count: SpectrumModel.numberOfPoints)
+        var mappedPoints : [CGPoint] = []
         
         // I imagine this is not good computationally
         for i in 0..<spectrum.amplitudes.count {
-            let mappedAmplitude = map(n: Double(spectrum.amplitudes[i]), start1: Double(spectrum.bottomAmp), stop1: Double(spectrum.topAmp), start2: 1.0, stop2: 0.0)
-            let mappedFrequency = logMap(n: Double(spectrum.frequencies[i]), start1: spectrum.minFreq, stop1: spectrum.maxFreq, start2: 0.0, stop2: 1.0)
-            mappedPoints[i] = CGPoint(x: mappedFrequency, y: mappedAmplitude)
+            let mappedAmplitude = spectrum.amplitudes[i].mappedInverted(from: spectrum.bottomAmp...spectrum.topAmp)
+            let mappedFrequency = spectrum.frequencies[i].mappedLog10(from: spectrum.minFreq...spectrum.maxFreq)
+            mappedPoints.append(CGPoint(x: mappedFrequency, y: mappedAmplitude))
         }
         
         return ZStack{
@@ -303,26 +339,25 @@ struct SpectrumView: View {
     }
     
     func createSpectrumShape(width: CGFloat, height: CGFloat) -> some View {
-        
-        var mappedPoints = Array(repeating: CGPoint(x: 0.0, y: 0.0), count: SpectrumModel.numberOfPoints)
-        var mappedIndexedDoubles: [Double] = Array(repeating: 0.0, count: SpectrumModel.numberOfPoints*2 + 4)
+        var mappedIndexedDoubles: [Double] = []
         
         // I imagine this is not good computationally
         for i in 0..<spectrum.amplitudes.count {
-            let mappedAmplitude = map(n: Double(spectrum.amplitudes[i]), start1: Double(spectrum.bottomAmp), stop1: Double(spectrum.topAmp), start2: 1.0, stop2: 0.0)
-            let mappedFrequency = logMap(n: Double(spectrum.frequencies[i]), start1: spectrum.minFreq, stop1: spectrum.maxFreq, start2: 0.0, stop2: 1.0)
-            mappedPoints[i] = CGPoint(x: mappedFrequency, y: mappedAmplitude)
+            let mappedAmplitude = spectrum.amplitudes[i].mappedInverted(from: spectrum.bottomAmp...spectrum.topAmp)
+            var mappedFrequency = spectrum.frequencies[i].mappedLog10(from: spectrum.minFreq...spectrum.maxFreq)
             
-            if mappedFrequency > 0.0 && mappedFrequency < 1.0{
-                mappedIndexedDoubles[2*i] = mappedFrequency
+            if mappedFrequency < 0.0 || mappedFrequency > 1.0 {
+                mappedFrequency = 0.0
             }
-            mappedIndexedDoubles[2*i+1] = mappedAmplitude
+            mappedIndexedDoubles.append(Double(mappedFrequency))
+            mappedIndexedDoubles.append(Double(mappedAmplitude))
         }
         
-        mappedIndexedDoubles[SpectrumModel.numberOfPoints*2 - 4] = 1.0
-        mappedIndexedDoubles[SpectrumModel.numberOfPoints*2 - 3] = 1.0
-        mappedIndexedDoubles[SpectrumModel.numberOfPoints*2 - 2] = 0.0
-        mappedIndexedDoubles[SpectrumModel.numberOfPoints*2 - 1] = 1.0
+        // just some stuff that gets us the fill
+        mappedIndexedDoubles.append(1.0)
+        mappedIndexedDoubles.append(1.0)
+        mappedIndexedDoubles.append(0.0)
+        mappedIndexedDoubles.append(1.0)
         
         return ZStack{
             if shouldStroke {
@@ -340,73 +375,28 @@ struct SpectrumView: View {
     }
 }
 
-func map(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
-    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
-}
-
-func map(n: CGFloat, start1: CGFloat, stop1: CGFloat, start2: CGFloat, stop2: CGFloat) -> CGFloat {
-    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
-}
-
-func logMap(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
-    let logN = log10(n)
-    let logStart1 = log10(start1)
-    let logStop1 = log10(stop1)
-    let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
-    if(result.isNaN){
-        return 0.1
-    } else {
-        return ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
-    }
-}
-
-func expMap(n: Float, start1: Float, stop1: Float, start2: Float, stop2: Float) -> Float {
-
-    let logStart2 = log(start2);
-    let logStop2 = log(stop2);
-
-    // calculate adjustment factor
-    let scale = (logStop2-logStart2) / Float(stop1-start1);
-
-    return exp(logStart2 + scale*(Float(n)-start1));
-}
-
-// This packages the y locations in a convenient way for the MorphableShape struct
-struct HorizontalLineData{
-    let locationData : [Double]
-    
-    init(yLoc: Double){
-        locationData = [0.0, yLoc, 1.0, yLoc]
-    }
-}
-
-func calculateLocalCoordinateFraction(point: CGPoint, width: CGFloat, height: CGFloat) -> CGPoint {
-    return CGPoint(x: map(n: point.x, start1: 0.0, stop1: width, start2: 0.0, stop2: 1.0)
-                        , y: map(n: point.y, start1: 0.0, stop1: height, start2: 0.0, stop2: 1.0))
-}
-
 // MARK: HorizontalAxis
 struct HorizontalAxis: View {
     
-    @State var minX : Double = 30
-    @State var maxX : Double = 20_000
+    @State var minX : CGFloat = 30
+    @State var maxX : CGFloat = 20_000
     @State var isLogarithmicScale: Bool = true
     @State var shouldDisplayAxisLabel: Bool = true
     
     public var body: some View {
         
-        let verticalLineXLocations = [100.0,1000.0,10000.0]
+        let verticalLineXLocations : [CGFloat] = [100.0,1000.0,10000.0]
         let verticalLineLabels = ["100","1k","10k"]
         
         var verticalLineXLocationsMapped : [CGFloat] = Array(repeating: 0.0, count: verticalLineXLocations.count)
         
         if isLogarithmicScale {
             for i in 0..<verticalLineXLocations.count {
-                verticalLineXLocationsMapped[i] = CGFloat(logMap(n: verticalLineXLocations[i], start1: minX, stop1: maxX, start2: 0.0, stop2: 1.0))
+                verticalLineXLocationsMapped[i] = verticalLineXLocations[i].mappedLog10(from: minX...maxX)
             }
         } else {
             for i in 0..<verticalLineXLocations.count {
-                verticalLineXLocationsMapped[i] = CGFloat(map(n: verticalLineXLocations[i], start1: minX, stop1: maxX, start2: 0.0, stop2: 1.0))
+                verticalLineXLocationsMapped[i] = verticalLineXLocations[i].mapped(from: minX...maxX)
             }
         }
         
@@ -452,7 +442,7 @@ struct VerticalAxis: View {
         var locationData : [HorizontalLineData] = []
         
         for i in 0..<horizontalLineYLocations.count {
-            horizontalLineYLocationsMapped[i] = map(n: horizontalLineYLocations[i], start1: minY, stop1: maxY, start2: 1.0, stop2: 0.0)
+            horizontalLineYLocationsMapped[i] = horizontalLineYLocations[i].mappedInverted(from: minY...maxY)
             locationData.append(HorizontalLineData(yLoc: Double(horizontalLineYLocationsMapped[i])))
         }
         
@@ -493,7 +483,7 @@ struct VerticalAxis: View {
 // MARK: SpectrumView_Previews
 struct SpectrumView_Previews: PreviewProvider {
     static var previews: some View {
-        SpectrumView(node: Mixer())
+        SpectrumView(Mixer())
     }
 }
 

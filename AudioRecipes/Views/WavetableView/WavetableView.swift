@@ -2,8 +2,15 @@ import SwiftUI
 import AudioKit
 
 class WavetableModel: ObservableObject {
+    @Environment(\.isPreview) var isPreview
     @Published var floats : [Float] = []
     var node: DynamicOscillator?
+    
+    init() {
+        if isPreview {
+            floats = Table(.sine).content
+        }
+    }
     
     func updateNode(_ node: DynamicOscillator) {
         if node !== self.node {

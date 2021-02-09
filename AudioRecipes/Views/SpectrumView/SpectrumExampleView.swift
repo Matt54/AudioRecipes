@@ -12,9 +12,13 @@ struct SpectrumExampleView: View{
                 .foregroundColor(.white)
             
             if variationType == .defaultSpectrum {
-                SpectrumView(node: conductor.filter)
+                SpectrumView(conductor.filter)
+            } else if variationType == .pointsSpectrum {
+                SpectrumView(conductor.filter, shouldPlotPoints: true, shouldStroke:false, shouldFill: false)
+            } else if variationType == .pointsAndFillSpectrum {
+                SpectrumView(conductor.filter, shouldPlotPoints: true, shouldStroke:false, shouldFill: true)
             } else {
-                SpectrumView(node: conductor.filter)
+                SpectrumView(conductor.filter)
                 Slider(value: $filterLowPassPercentage, in: 0.0...1.0, step: 0.0001)
                     .accentColor(.green)
                     .onChange(of: filterLowPassPercentage, perform: { value in
@@ -25,8 +29,12 @@ struct SpectrumExampleView: View{
             }
             Button("Tap to vary view") {
                 if variationType == .defaultSpectrum {
+                    variationType = .pointsSpectrum
+                } else if variationType == .pointsSpectrum {
+                    variationType = .pointsAndFillSpectrum
+                } else if variationType == .pointsAndFillSpectrum {
                     variationType = .lowPassFilter
-                } else {
+                }else {
                     variationType = .defaultSpectrum
                 }
             }
@@ -37,6 +45,8 @@ struct SpectrumExampleView: View{
     
     enum VariationType : String {
         case defaultSpectrum = "Default"
+        case pointsSpectrum = "Just Points"
+        case pointsAndFillSpectrum = "Points and Fill"
         case lowPassFilter = "Low Pass Filter"
     }
     
@@ -54,7 +64,7 @@ struct SpectrumExampleView: View{
 
 struct SpectrumExampleView_Previews: PreviewProvider {
     static var previews: some View {
-        SpectrumExampleView()
+        SpectrumExampleView().environmentObject(Conductor.shared)
     }
 }
 

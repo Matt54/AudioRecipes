@@ -136,8 +136,8 @@ class Conductor : ObservableObject{
     var displayWaveTables : [DisplayWaveTable] = []
     
     @Published var displayIndex: Int = 0
-    let wavetableSize = 4096
-    var defaultWaves : [Table] = [Table(.triangle), Table(.square), Table(.sine), Table(.sawtooth)] //[Table(.sine, count: 2048), Table(.sawtooth, count: 2048), Table(.square, count: 2048)]
+    let wavetableSize = 512
+    var defaultWaves : [Table] = [Table(.triangle, count: 256), Table(.square, count: 256), Table(.sine, count: 256), Table(.sawtooth, count: 256)] //[Table(.sine, count: 2048), Table(.sawtooth, count: 2048), Table(.square, count: 2048)]
     var numberOfWavePositions = 256
     
     var wavePosition: Double = 0.0{

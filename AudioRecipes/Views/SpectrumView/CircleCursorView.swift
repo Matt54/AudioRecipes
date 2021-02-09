@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CircleCursorView: View {
-    //@State private var animationAmount: CGFloat = 1
     @State var cursorColor: Color = Color.yellow
     
     var body: some View {

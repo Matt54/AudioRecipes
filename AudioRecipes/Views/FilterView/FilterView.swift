@@ -66,7 +66,7 @@ struct FilterView: View {
     var body: some View {
         GeometryReader{ geometry in
             ZStack{
-                SpectrumView(node: node, shouldStroke: false, shouldAnalyzeTouch: false, shouldDisplayAxisLabels: false)
+                SpectrumView(node, shouldStroke: false, shouldAnalyzeTouch: false, shouldDisplayAxisLabels: false)
                 Color.black.opacity(0.001) // just blocking the gesture of SpectrumView
                 createFilterOverlay(width: geometry.size.width, height: geometry.size.height)
                     .clipped()
@@ -85,7 +85,7 @@ struct FilterView: View {
                         if value.location.y > 0.0 && value.location.y < geometry.size.height {
                             y = Float(value.location.y)
                         }
-                        node.cutoffFrequency = AUValue(expMap(n: x, start1: Float(0.0), stop1: Float(geometry.size.width), start2: Float(filterModel.minFreq), stop2: Float(filterModel.maxFreq)))
+                        node.cutoffFrequency = AUValue(CGFloat(x).mappedExp(from: 0...geometry.size.width, to: CGFloat(filterModel.minFreq)...CGFloat(filterModel.maxFreq)))
                         
                         node.resonance = AUValue(map(n: CGFloat(y), start1: 0.0, stop1: geometry.size.height, start2: 10.0, stop2: -10.0))
                     }
@@ -337,4 +337,36 @@ struct FilterView2: View {
         let a = z.imaginary
         return Complex(r * T.cos(a), r * T.sin(a))
     }
+}
+
+
+func map(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
+    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
+}
+
+func map(n: CGFloat, start1: CGFloat, stop1: CGFloat, start2: CGFloat, stop2: CGFloat) -> CGFloat {
+    return ((n - start1) / (stop1 - start1)) * (stop2 - start2) + start2
+}
+
+func logMap(n: Double, start1: Double, stop1: Double, start2: Double, stop2: Double) -> Double {
+    let logN = log10(n)
+    let logStart1 = log10(start1)
+    let logStop1 = log10(stop1)
+    let result = ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
+    if(result.isNaN){
+        return 0.1
+    } else {
+        return ((logN - logStart1 ) / (logStop1 - logStart1)) * (stop2 - start2) + start2
+    }
+}
+
+func expMap(n: CGFloat, start1: CGFloat, stop1: CGFloat, start2: CGFloat, stop2: CGFloat) -> CGFloat {
+
+    let logStart2 = log(start2);
+    let logStop2 = log(stop2);
+
+    // calculate adjustment factor
+    let scale = (logStop2-logStart2) / CGFloat(stop1-start1);
+
+    return exp(logStart2 + scale*(CGFloat(n)-start1));
 }

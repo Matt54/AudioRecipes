@@ -36,10 +36,11 @@
 		4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */; };
 		4F81752A25CC32080023383D /* AnyKindOfWay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F81752925CC32080023383D /* AnyKindOfWay.mp3 */; };
 		4F81752E25CC39750023383D /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 4F81752D25CC39750023383D /* Numerics */; };
+		4FF23FF925D2C2B1002EC8C1 /* WavetableArrayExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */; };
+		FAFB4C0225D22BDE00F64CB1 /* WavetableArrayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB4C0125D22BDE00F64CB1 /* WavetableArrayView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4F1E271825CD895200A46D89 /* AudioKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioKit; path = ../../../../../../Documents/GitHub/AudioKit; sourceTree = "<group>"; };
 		4F8174C425CC2C750023383D /* AudioRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F8174C725CC2C750023383D /* AudioRecipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecipesApp.swift; sourceTree = "<group>"; };
 		4F8174C925CC2C750023383D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,7 +70,8 @@
 		4F81752225CC2FF70023383D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
 		4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
 		4F81752925CC32080023383D /* AnyKindOfWay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AnyKindOfWay.mp3; path = ../../../../../../../Desktop/AnyKindOfWay.mp3; sourceTree = "<group>"; };
-		4FA695A025CCB95B008904D6 /* AudioKitUI */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioKitUI; path = ../../../../../../Documents/GitHub/AudioKitUI; sourceTree = "<group>"; };
+		4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayExampleView.swift; sourceTree = "<group>"; };
+		FAFB4C0125D22BDE00F64CB1 /* WavetableArrayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,8 +91,6 @@
 		4F8174BB25CC2C750023383D = {
 			isa = PBXGroup;
 			children = (
-				4F1E271825CD895200A46D89 /* AudioKit */,
-				4FA695A025CCB95B008904D6 /* AudioKitUI */,
 				4F8174C625CC2C750023383D /* AudioRecipes */,
 				4F8174C525CC2C750023383D /* Products */,
 			);
@@ -131,6 +131,7 @@
 		4F8174E225CC2DA20023383D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FAFB4C0025D22B9E00F64CB1 /* WavetableArrayView */,
 				4F81751625CC2F5A0023383D /* Helpers */,
 				4F8174E825CC2DDB0023383D /* WavetableView */,
 				4F8174E725CC2DD20023383D /* SpectrumView */,
@@ -217,6 +218,15 @@
 				4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */,
 			);
 			path = CustomOscillator;
+			sourceTree = "<group>";
+		};
+		FAFB4C0025D22B9E00F64CB1 /* WavetableArrayView */ = {
+			isa = PBXGroup;
+			children = (
+				FAFB4C0125D22BDE00F64CB1 /* WavetableArrayView.swift */,
+				4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */,
+			);
+			path = WavetableArrayView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -316,6 +326,7 @@
 				4F8174CA25CC2C750023383D /* ContentView.swift in Sources */,
 				4F8174E025CC2D730023383D /* Conductor.swift in Sources */,
 				4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */,
+				FAFB4C0225D22BDE00F64CB1 /* WavetableArrayView.swift in Sources */,
 				4F8174C825CC2C750023383D /* AudioRecipesApp.swift in Sources */,
 				4F8174ED25CC2E110023383D /* AmplitudeView.swift in Sources */,
 				4F81750525CC2EA90023383D /* CircleCursorView.swift in Sources */,
@@ -323,6 +334,7 @@
 				4F8174F925CC2E620023383D /* SpectrogramView.swift in Sources */,
 				4F8174F625CC2E460023383D /* FilterExampleView.swift in Sources */,
 				4F81751B25CC2F7C0023383D /* ColorHelpers.swift in Sources */,
+				4FF23FF925D2C2B1002EC8C1 /* WavetableArrayExampleView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

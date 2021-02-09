@@ -28,6 +28,10 @@ struct ContentView: View {
                     Image(systemName: "waveform.path.ecg.rectangle")
                     Text("Wavetable View")
                 }
+                NavigationLink(destination: WavetableArrayExampleView()){
+                    Image(systemName: "waveform.path.ecg.rectangle")
+                    Text("Wavetable Array View")
+                }
             }
             .navigationBarTitle("AudioKitUI")
         }
