@@ -2,21 +2,21 @@
   "object": {
     "pins": [
       {
-        "package": "AudioKit",
-        "repositoryURL": "https://github.com/AudioKit/AudioKit.git",
-        "state": {
-          "branch": "v5-develop",
-          "revision": "383b22230be0ac173875cafa07207029383e60b6",
-          "version": null
-        }
-      },
-      {
         "package": "AudioKitUI",
         "repositoryURL": "https://github.com/AudioKit/AudioKitUI.git",
         "state": {
           "branch": "main",
           "revision": "c0116820b633610d6ce793925722eb74208466b8",
           "version": null
+        }
+      },
+      {
+        "package": "Marquee",
+        "repositoryURL": "https://github.com/SwiftUIKit/Marquee",
+        "state": {
+          "branch": null,
+          "revision": "c0ca3fe49f91cbf4fda7a4fbcf9d79db6796db85",
+          "version": "0.2.0"
         }
       },
       {

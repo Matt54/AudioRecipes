@@ -29,14 +29,24 @@ struct ContentView: View {
                     Text("Wavetable View")
                 }
                 NavigationLink(destination: WavetableArrayExampleView()){
-                    Image(systemName: "waveform.path.ecg.rectangle")
+                    Image(systemName: "waveform.path")
                     Text("Wavetable Array View")
+                }
+                NavigationLink(destination: AudioPlayerExampleView()){
+                    Image(systemName: "waveform")
+                    Text("Audio Player View")
+                }
+                NavigationLink(destination: RollingAudioPlayerExampleView()){
+                    Image(systemName: "waveform")
+                    Text("Rolling Audio Player View")
                 }
             }
             .navigationBarTitle("AudioKitUI")
         }
     }
 }
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

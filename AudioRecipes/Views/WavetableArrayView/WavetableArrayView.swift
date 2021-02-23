@@ -9,19 +9,31 @@ import SwiftUI
 import AudioKit
 import Accelerate
 
-
-
 struct WavetableArrayView: View {
     @StateObject var wavetableModel = WavetableModel()
-    
-    @State var backgroundColor = Color.black
-    @State var arrayStrokeColor = Color.white.opacity(0.4)
-    @State var selectedStrokeColor = Color.white.opacity(1.0)
-    @State var fillColor = Color.green.opacity(0.7)
-    
     var node: DynamicOscillator
     @Binding var selectedValue : Double
-    @State var wavetableArray : [Table] = []
+    @State var wavetableArray : [Table]
+    private var backgroundColor: Color
+    private var arrayStrokeColor: Color
+    private var selectedStrokeColor: Color
+    private var fillColor: Color
+    
+    init(_ node: DynamicOscillator,
+         selectedValue: Binding<Double>,
+         realWavetableArray: [Table],
+         backgroundColor: Color = Color.black,
+         arrayStrokeColor: Color = Color.white.opacity(0.4),
+         selectedStrokeColor: Color = Color.white.opacity(1.0),
+         fillColor: Color = Color.green.opacity(0.7)) {
+        self.node = node
+        _selectedValue = selectedValue
+        self._wavetableArray = State(initialValue: downSampleTables(inputTables: realWavetableArray))
+        self.backgroundColor = backgroundColor
+        self.arrayStrokeColor = arrayStrokeColor
+        self.selectedStrokeColor = selectedStrokeColor
+        self.fillColor = fillColor
+    }
     
     var body: some View {
         let selectedIndex = Int(selectedValue)
@@ -30,91 +42,44 @@ struct WavetableArrayView: View {
         
         return GeometryReader { geometry in
             ZStack {
-                backgroundColor
-                WavetableArrayStrokeView(wavetableArray: wavetableArray)
-                
+                StaticWavetableArrayView(wavetableArray: wavetableArray)
                 fillAndStrokeTable(width: geometry.size.width * 0.75,
                            height: geometry.size.height * 0.2,
-                           table: wavetableArray[selectedIndex].content)
-                    .frame(width: geometry.size.width * 0.5,
-                           height: geometry.size.height * 0.2)
-                    .offset(x: CGFloat(selectedIndex) * geometry.size.width * xOffset-geometry.size.width / 4.3,
-                            y: CGFloat(selectedIndex) * geometry.size.height * yOffset + geometry.size.height / 2.6)
-                
-                /*ForEach((0..<wavetableArray.count).reversed(), id: \.self) { i in
-                    Group {
-                        strokeTable(width: geometry.size.width * 0.75,
-                                   height: geometry.size.height * 0.2,
-                                   table: wavetableArray[i].content)
-                        if i == selectedIndex {
-                            fillAndStrokeTable(width: geometry.size.width * 0.75,
-                                       height: geometry.size.height * 0.2,
-                                       table: wavetableArray[i].content)
-                        }
-                        
-                    }
-                    .frame(width: geometry.size.width * 0.5,
-                           height: geometry.size.height * 0.2)
-                    .offset(x: CGFloat(i) * geometry.size.width * xOffset-geometry.size.width / 4.3,
-                            y: CGFloat(i) * geometry.size.height * yOffset + geometry.size.height / 2.6)
-                }*/
-                
-            }//.drawingGroup()
+                           table: wavetableModel.floats)
+                .frame(width: geometry.size.width * 0.5, height: geometry.size.height * 0.2)
+                .offset(x: CGFloat(selectedIndex) * geometry.size.width * xOffset-geometry.size.width / 4.3,
+                        y: CGFloat(selectedIndex) * geometry.size.height * yOffset + geometry.size.height / 2.6)
+            }
+            
+            .drawingGroup()
             .onAppear {
                 wavetableModel.updateNode(node)
             }
         }
     }
     
-    func strokeTable(width: CGFloat, height: CGFloat, table: [Float]) -> some View {
-        let points : [CGPoint] = mapPoints(width: width, height: height, table: table)
-        return Path{ path in
-            path.addLines(points)
+    func fillAndStrokeTable(width: CGFloat, height: CGFloat, table: [Float], fillColor: Color = Color.green.opacity(0.7), selectedStrokeColor: Color = Color.white.opacity(1.0)) -> some View {
+        var points : [CGPoint] = []
+        points.append(CGPoint(x: 0.0,y: height*0.5))
+        for i in 0..<table.count {
+            let x = i.mapped(from: 0...table.count, to: 0.0...width)
+            let y = CGFloat(table[i]).mappedInverted(from: -1...1, to: 0.0...height)
+            points.append(CGPoint(x: x, y: y))
         }
-        .stroke(arrayStrokeColor,lineWidth: 1)
-    }
-    
-    func fillAndStrokeTable(width: CGFloat, height: CGFloat, table: [Float]) -> some View {
-        let points : [CGPoint] = mapPoints(width: width, height: height, table: table, shouldClosePath: true)
+        points.append(CGPoint(x: width,y: height*0.5))
+        points.append(CGPoint(x: 0.0,  y: height*0.5))
         return ZStack {
             Path{ path in
                 path.addLines(points)
-            }
-            .stroke(selectedStrokeColor,lineWidth: 1)
+            }.stroke(selectedStrokeColor,lineWidth: 1)
             
             Path{ path in
                 path.addLines(points)
-            }
-            .fill(fillColor)
+            }.fill(fillColor)
         }
     }
     
-    func mapPoints(width: CGFloat, height: CGFloat, table: [Float], shouldClosePath: Bool = false) -> [CGPoint] {
-        let xPaddedLowerBound = width*0.01
-        let xPaddedUpperBound = width*0.99
-        let yPaddedLowerBound = height*0.01
-        let yPaddedUpperBound = height*0.99
-        
-        var points : [CGPoint] = []
-        
-        if shouldClosePath {
-            points.append(CGPoint(x: xPaddedLowerBound,y: height*0.5))
-        }
-        
-        for i in 0..<table.count {
-            let x = i.mapped(from: 0...table.count, to: xPaddedLowerBound...xPaddedUpperBound)
-            let y = CGFloat(table[i]).mapped(from: -1...1, to: yPaddedLowerBound...yPaddedUpperBound)
-            points.append(CGPoint(x: x, y: height-y))
-        }
-        
-        if shouldClosePath {
-            points.append(CGPoint(x: xPaddedUpperBound,y: height*0.5))
-            points.append(CGPoint(x: xPaddedLowerBound,y: height*0.5))
-        }
-        return points
-    }
-    
-    struct WavetableArrayStrokeView: View {
+    struct StaticWavetableArrayView: View {
         @State var wavetableArray : [Table] = []
         @State var arrayStrokeColor = Color.white.opacity(0.4)
         var selectedStrokeColor = Color.white.opacity(1.0)
@@ -140,76 +105,25 @@ struct WavetableArrayView: View {
         }
         
         func strokeTable(width: CGFloat, height: CGFloat, table: [Float]) -> some View {
-            let points : [CGPoint] = mapPoints(width: width, height: height, table: table)
+            var points : [CGPoint] = []
+            for i in 0..<table.count {
+                let x = i.mapped(from: 0...table.count, to: 0.0...width)
+                let y = CGFloat(table[i]).mappedInverted(from: -1...1, to: 0.0...height)
+                points.append(CGPoint(x: x, y: y))
+            }
             return Path{ path in
                 path.addLines(points)
             }
             .stroke(arrayStrokeColor,lineWidth: 1)
         }
-        
-        func mapPoints(width: CGFloat, height: CGFloat, table: [Float], shouldClosePath: Bool = false) -> [CGPoint] {
-            let xPaddedLowerBound = width*0.01
-            let xPaddedUpperBound = width*0.99
-            let yPaddedLowerBound = height*0.01
-            let yPaddedUpperBound = height*0.99
-            
-            var points : [CGPoint] = []
-            
-            if shouldClosePath {
-                points.append(CGPoint(x: xPaddedLowerBound,y: height*0.5))
-            }
-            
-            for i in 0..<table.count {
-                let x = i.mapped(from: 0...table.count, to: xPaddedLowerBound...xPaddedUpperBound)
-                let y = CGFloat(table[i]).mapped(from: -1...1, to: yPaddedLowerBound...yPaddedUpperBound)
-                points.append(CGPoint(x: x, y: height-y))
-            }
-            
-            if shouldClosePath {
-                points.append(CGPoint(x: xPaddedUpperBound,y: height*0.5))
-                points.append(CGPoint(x: xPaddedLowerBound,y: height*0.5))
-            }
-            return points
-        }
     }
-    
 }
 
 struct WavetableArrayView_Previews: PreviewProvider {
     static var previews: some View {
         let testWaves : [Table] = [Table(.triangle), Table(.square), Table(.sine), Table(.sawtooth)]
         let interpolatedTestWaves = createInterpolatedTables(inputTables: testWaves)
-        
-        return WavetableArrayView(node: DynamicOscillator(), selectedValue: .constant(0), wavetableArray: interpolatedTestWaves)
-            .frame(width: 400, height: 200)
+        return WavetableArrayView(DynamicOscillator(), selectedValue: .constant(0), realWavetableArray: interpolatedTestWaves)
+            .previewLayout(.fixed(width: 1500, height: 500))
     }
-}
-
-func createInterpolatedTables(inputTables: [Table], numberOfDesiredTables : Int = 256) -> [Table] {
-    var interpolatedTables : [Table] = []
-    let thresholdForExact = 0.01 * Double(inputTables.count)
-    let rangeValue = (Double(numberOfDesiredTables) / Double(inputTables.count - 1)).rounded(.up)
-    
-    for i in 1...numberOfDesiredTables{
-        let waveformIndex = Int( Double(i-1) / rangeValue)
-        let interpolatedIndex = (Double(i-1) / rangeValue).truncatingRemainder(dividingBy: 1.0)
-        
-        // if we are nearly exactly at one of our input tables - use the input table for this index value
-        if((1.0 - interpolatedIndex) < thresholdForExact){
-            interpolatedTables.append(inputTables[waveformIndex+1])
-        }
-        else if(interpolatedIndex < thresholdForExact){
-            interpolatedTables.append(inputTables[waveformIndex])
-        }
-        
-        // between tables - interpolate
-        else{
-            // linear interpolate to get array of floats existing between the two tables
-            let interpolatedFloats = [Float](vDSP.linearInterpolate([Float](inputTables[waveformIndex]),
-                                                                        [Float](inputTables[waveformIndex+1]),
-                                                                        using: Float(interpolatedIndex) ) )
-            interpolatedTables.append(Table(interpolatedFloats))
-        }
-    }
-    return interpolatedTables
 }
