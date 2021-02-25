@@ -16,7 +16,7 @@ class RollingAudioPlayerModel: ObservableObject {
     //var audioInformation: (signal: [Float], rate: Double, frameCount: Int) = ([],0,0)
     let rmsFactor = 288.0
     var sampleRate = 0.0
-    @Published var rmsVals = ContiguousArray<Float>()
+    @Published var rmsVals: [Float] = []
     
     @Published var startIndex = 0
     @Published var endIndex = 200
@@ -120,11 +120,11 @@ struct RollingAudioPlayerView: View {
         .stroke(Color.white,lineWidth: 3)
     }
     
-    func createWave(width: CGFloat, height: CGFloat, rmsVals: ContiguousArray<Float>) -> some View {
+    func createWave(width: CGFloat, height: CGFloat, rmsVals: [Float]) -> some View {
         
         let numberOfPoints = rollingAudioPlayerModel.endIndex - rollingAudioPlayerModel.startIndex
         
-        var points = ContiguousArray<CGPoint>()
+        var points: [CGPoint] = []
         points.reserveCapacity(numberOfPoints*2+2)
         
         points.append(CGPoint(x: 0, y: height*0.5))
@@ -145,26 +145,37 @@ struct RollingAudioPlayerView: View {
         }
         
         //points.append(CGPoint(x: width, y: height))
+        
+        let y = CGFloat(rmsVals[rollingAudioPlayerModel.startIndex]).mapped(from: 0...1, to: height*0.5...height)
+        points.append(CGPoint(x: 0, y: y))
         points.append(CGPoint(x: 0, y: height*0.5))
         
         return ZStack{
             //Color.black
 
-            Path{ path in
-                //path.addLines(points)
+            /*Path{ path in
                 path.move(to: points[0])
                 points.forEach { point in
                     path.addLine(to: point)
                 }
             }
-            //.stroke(Color.white,lineWidth: 1)
+            .fill(fillColor)*/
+            
+            /*ForEach(0..<points.count-1) { i in
+                Path{ path in
+                    path.move(to: points[i])
+                    path.addLine(to: points[i+1])
+                }
+                .stroke(Color.white,lineWidth: 1)
+            }*/
+            
+            Path{ path in
+                path.addLines(points)
+            }
             .fill(fillColor)
             
             Path{ path in
-                path.move(to: points[0])
-                points.forEach { point in
-                    path.addLine(to: point)
-                }
+                path.addLines(points)
             }
             .stroke(Color.white,lineWidth: 1)
 

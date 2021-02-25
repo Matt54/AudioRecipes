@@ -93,7 +93,6 @@
 		4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayExampleView.swift; sourceTree = "<group>"; };
 		FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerView.swift; sourceTree = "<group>"; };
 		FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerExampleView.swift; sourceTree = "<group>"; };
-		FAA2D24825D6BBFA00279A11 /* AudioKit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AudioKit; path = ../../../../../../Documents/GitHub/AudioKit; sourceTree = "<group>"; };
 		FAA2D24B25D83B8900279A11 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		FAA8AE9F25D851390003C64D /* AudioPlayerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerExampleView.swift; sourceTree = "<group>"; };
 		FAFB4C0125D22BDE00F64CB1 /* WavetableArrayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayView.swift; sourceTree = "<group>"; };
@@ -126,7 +125,6 @@
 		4F8174BB25CC2C750023383D = {
 			isa = PBXGroup;
 			children = (
-				FAA2D24825D6BBFA00279A11 /* AudioKit */,
 				4F8174C625CC2C750023383D /* AudioRecipes */,
 				4F8174C525CC2C750023383D /* Products */,
 			);
@@ -620,7 +618,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AudioKit/AudioKitUI.git";
 			requirement = {
-				branch = main;
+				branch = develop;
 				kind = branch;
 			};
 		};
