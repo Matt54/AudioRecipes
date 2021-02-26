@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/AudioKit/AudioKit.git",
         "state": {
           "branch": "v5-develop",
-          "revision": "7246057e17e9c497c1b32c7a27c09c784c284b27",
+          "revision": "1c14178b99072ff33be07f33f3d8c8ed9cff9b38",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/AudioKit/AudioKitUI.git",
         "state": {
           "branch": "develop",
-          "revision": "c0116820b633610d6ce793925722eb74208466b8",
+          "revision": "6aaefe66ac5dcd8bcbb0a249b09a66e1d8e7f561",
           "version": null
         }
       },
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/apple/swift-numerics.git",
         "state": {
           "branch": null,
-          "revision": "6b24333510e9044cf4716a07bed65eeed6bc6393",
-          "version": "0.0.8"
+          "revision": "6583ac70c326c3ee080c1d42d9ca3361dca816cd",
+          "version": "0.1.0"
         }
       }
     ]
