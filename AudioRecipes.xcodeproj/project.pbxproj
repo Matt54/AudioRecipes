@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		4F21179525D5675A002DFB62 /* AudioFileExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F21179425D5675A002DFB62 /* AudioFileExampleView.swift */; };
 		4F35978325D564B9001340E4 /* AudioFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35978225D564B9001340E4 /* AudioFileView.swift */; };
+		4F43E06C25E7E7BE00196594 /* LittleThings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06425E7E7BE00196594 /* LittleThings.mp3 */; };
+		4F43E06E25E7E7BE00196594 /* AnyKindOfWay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06625E7E7BE00196594 /* AnyKindOfWay.mp3 */; };
+		4F43E06F25E7E7BE00196594 /* Break Loose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06725E7E7BE00196594 /* Break Loose.mp3 */; };
+		4F43E07025E7E7BE00196594 /* Smoove Operator.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06825E7E7BE00196594 /* Smoove Operator.mp3 */; };
+		4F43E07225E7E7BE00196594 /* Sludgecrank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06B25E7E7BE00196594 /* Sludgecrank.wav */; };
 		4F8174C825CC2C750023383D /* AudioRecipesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174C725CC2C750023383D /* AudioRecipesApp.swift */; };
 		4F8174CA25CC2C750023383D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174C925CC2C750023383D /* ContentView.swift */; };
 		4F8174CC25CC2C750023383D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8174CB25CC2C750023383D /* Assets.xcassets */; };
@@ -36,14 +41,12 @@
 		4F81752025CC2FCA0023383D /* customosc.c in Sources */ = {isa = PBXBuildFile; fileRef = 4F81751F25CC2FCA0023383D /* customosc.c */; };
 		4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752225CC2FF70023383D /* CustomOscillator.swift */; };
 		4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */; };
-		4F81752A25CC32080023383D /* AnyKindOfWay.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F81752925CC32080023383D /* AnyKindOfWay.mp3 */; };
 		4F81752E25CC39750023383D /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 4F81752D25CC39750023383D /* Numerics */; };
 		4F9CAD3125DFEA2B00BEA393 /* CPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */; };
 		4F9CAD3525E0A0D700BEA393 /* Marquee in Frameworks */ = {isa = PBXBuildFile; productRef = 4F9CAD3425E0A0D700BEA393 /* Marquee */; };
 		4FACB49225DB5DA600CF2370 /* WavetableHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */; };
 		4FACB49525DB659A00CF2370 /* AudioAnalysisHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */; };
 		4FB053DF25D40DD500E6F450 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB053DE25D40DD500E6F450 /* RepeatingTimer.swift */; };
-		4FD73DA425D4D414009F8925 /* Sludgecrank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4FD73DA325D4D414009F8925 /* Sludgecrank.wav */; };
 		4FF23FF925D2C2B1002EC8C1 /* WavetableArrayExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */; };
 		FA3827F925E353E6006C4377 /* RollingAudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */; };
 		FA3827FD25E35637006C4377 /* RollingAudioPlayerExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */; };
@@ -56,6 +59,11 @@
 		4F21179425D5675A002DFB62 /* AudioFileExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileExampleView.swift; sourceTree = "<group>"; };
 		4F21179725D5BC67002DFB62 /* AudioRecipes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioRecipes.entitlements; sourceTree = "<group>"; };
 		4F35978225D564B9001340E4 /* AudioFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileView.swift; sourceTree = "<group>"; };
+		4F43E06425E7E7BE00196594 /* LittleThings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = LittleThings.mp3; sourceTree = "<group>"; };
+		4F43E06625E7E7BE00196594 /* AnyKindOfWay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = AnyKindOfWay.mp3; sourceTree = "<group>"; };
+		4F43E06725E7E7BE00196594 /* Break Loose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break Loose.mp3"; sourceTree = "<group>"; };
+		4F43E06825E7E7BE00196594 /* Smoove Operator.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Smoove Operator.mp3"; sourceTree = "<group>"; };
+		4F43E06B25E7E7BE00196594 /* Sludgecrank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Sludgecrank.wav; sourceTree = "<group>"; };
 		4F8174C425CC2C750023383D /* AudioRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F8174C725CC2C750023383D /* AudioRecipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecipesApp.swift; sourceTree = "<group>"; };
 		4F8174C925CC2C750023383D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -84,12 +92,10 @@
 		4F81751F25CC2FCA0023383D /* customosc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = customosc.c; sourceTree = "<group>"; };
 		4F81752225CC2FF70023383D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
 		4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
-		4F81752925CC32080023383D /* AnyKindOfWay.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = AnyKindOfWay.mp3; path = ../../../../../../../Desktop/AnyKindOfWay.mp3; sourceTree = "<group>"; };
 		4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPHelpers.swift; sourceTree = "<group>"; };
 		4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableHelpers.swift; sourceTree = "<group>"; };
 		4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisHelpers.swift; sourceTree = "<group>"; };
 		4FB053DE25D40DD500E6F450 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
-		4FD73DA325D4D414009F8925 /* Sludgecrank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = Sludgecrank.wav; path = ../../../../../../../Desktop/Sludgecrank.wav; sourceTree = "<group>"; };
 		4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayExampleView.swift; sourceTree = "<group>"; };
 		FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerView.swift; sourceTree = "<group>"; };
 		FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerExampleView.swift; sourceTree = "<group>"; };
@@ -122,6 +128,34 @@
 			path = AudioFileView;
 			sourceTree = "<group>";
 		};
+		4F43E06225E7E7BE00196594 /* TestAudio */ = {
+			isa = PBXGroup;
+			children = (
+				4F43E06325E7E7BE00196594 /* Tracks */,
+				4F43E06A25E7E7BE00196594 /* Waveforms */,
+			);
+			path = TestAudio;
+			sourceTree = "<group>";
+		};
+		4F43E06325E7E7BE00196594 /* Tracks */ = {
+			isa = PBXGroup;
+			children = (
+				4F43E06425E7E7BE00196594 /* LittleThings.mp3 */,
+				4F43E06625E7E7BE00196594 /* AnyKindOfWay.mp3 */,
+				4F43E06725E7E7BE00196594 /* Break Loose.mp3 */,
+				4F43E06825E7E7BE00196594 /* Smoove Operator.mp3 */,
+			);
+			path = Tracks;
+			sourceTree = "<group>";
+		};
+		4F43E06A25E7E7BE00196594 /* Waveforms */ = {
+			isa = PBXGroup;
+			children = (
+				4F43E06B25E7E7BE00196594 /* Sludgecrank.wav */,
+			);
+			path = Waveforms;
+			sourceTree = "<group>";
+		};
 		4F8174BB25CC2C750023383D = {
 			isa = PBXGroup;
 			children = (
@@ -141,9 +175,8 @@
 		4F8174C625CC2C750023383D /* AudioRecipes */ = {
 			isa = PBXGroup;
 			children = (
+				4F43E06225E7E7BE00196594 /* TestAudio */,
 				4F21179725D5BC67002DFB62 /* AudioRecipes.entitlements */,
-				4FD73DA325D4D414009F8925 /* Sludgecrank.wav */,
-				4F81752925CC32080023383D /* AnyKindOfWay.mp3 */,
 				4F8174C725CC2C750023383D /* AudioRecipesApp.swift */,
 				4F8174C925CC2C750023383D /* ContentView.swift */,
 				4F8174DF25CC2D730023383D /* Conductor.swift */,
@@ -361,9 +394,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F8174CF25CC2C750023383D /* Preview Assets.xcassets in Resources */,
+				4F43E06C25E7E7BE00196594 /* LittleThings.mp3 in Resources */,
+				4F43E07225E7E7BE00196594 /* Sludgecrank.wav in Resources */,
+				4F43E06E25E7E7BE00196594 /* AnyKindOfWay.mp3 in Resources */,
+				4F43E06F25E7E7BE00196594 /* Break Loose.mp3 in Resources */,
 				4F8174CC25CC2C750023383D /* Assets.xcassets in Resources */,
-				4FD73DA425D4D414009F8925 /* Sludgecrank.wav in Resources */,
-				4F81752A25CC32080023383D /* AnyKindOfWay.mp3 in Resources */,
+				4F43E07025E7E7BE00196594 /* Smoove Operator.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

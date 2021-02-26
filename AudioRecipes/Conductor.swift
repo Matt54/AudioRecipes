@@ -70,14 +70,7 @@ class Conductor : ObservableObject{
         micMixer = Mixer(mic)
         
         // setup player
-        let url = URL(fileURLWithPath: Bundle.main.resourcePath! + "/AnyKindOfWay.mp3")
-        //let url = URL(fileURLWithPath: Bundle.main.resourcePath! + "/LittleThings.mp3")
-        do{
-            file = try AVAudioFile(forReading: url)
-        } catch{
-            print("oh no!")
-        }
-        player = AudioPlayer(file: file)!
+        player = createAudioPlayer(forResource: "AnyKindOfWay.mp3")
         player.isLooping = true
         playerMixer = Mixer(player)
       
@@ -118,20 +111,11 @@ class Conductor : ObservableObject{
         
         timer = RepeatingTimer(timeInterval: 0.008)
         timer.eventHandler = fire
-        
-        waveforms = createInterpolatedTables(inputTables: defaultWaves)
-        calculateActualWaveTable(Int(wavePosition))
-        setupAudioType()
-        
-        let wavetableURL = URL(fileURLWithPath: Bundle.main.resourcePath! + "/Sludgecrank.wav")
-        let audioInformation = loadAudioSignal(audioURL: wavetableURL)
-        let signal = audioInformation.signal
-        let tables = chopAudioToTables(signal: signal)
-        waveforms = createInterpolatedTables(inputTables: tables)
-        
-        timer.resume()
-        //Timer.scheduledTimer(timeInterval: 0.002, target: self, selector: #selector(fire(timer:)), userInfo: [], repeats: true)
 
+        waveforms = createWavetableArray(forResource: "Sludgecrank.wav")
+        calculateActualWaveTable(Int(wavePosition))
+        timer.resume()
+        setupAudioType()
     }
     
     enum TestInputType {
@@ -205,4 +189,23 @@ class Conductor : ObservableObject{
             osc.stop()
         }
     }
+}
+
+func createAudioPlayer(forResource: String) -> AudioPlayer {
+    let path = Bundle.main.path(forResource: forResource, ofType: nil)!
+    let url = URL(fileURLWithPath: path)
+    if let file = try? AVAudioFile(forReading: url) {
+        if let player = AudioPlayer(file: file) {return player}
+    }
+    print("Could not load resource: \(forResource)")
+    return AudioPlayer()
+}
+
+func createWavetableArray(forResource: String) -> [Table] {
+    let path = Bundle.main.path(forResource: forResource, ofType: nil)!
+    let url = URL(fileURLWithPath: path)
+    let audioInformation = loadAudioSignal(audioURL: url)
+    let signal = audioInformation.signal
+    let tables = chopAudioToTables(signal: signal)
+    return createInterpolatedTables(inputTables: tables)
 }
