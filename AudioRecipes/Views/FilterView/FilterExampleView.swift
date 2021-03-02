@@ -5,7 +5,7 @@ struct FilterExampleView: View {
     
     var body: some View {
         //FilterView(node: conductor.filter)
-        FilterView2(node: conductor.filter)
+        FilterView(node: conductor.filter)
     }
 }
 

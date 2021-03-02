@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F07C0F425E98F05009A5B73 /* Modulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F07C0F325E98F05009A5B73 /* Modulation.swift */; };
 		4F21179525D5675A002DFB62 /* AudioFileExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F21179425D5675A002DFB62 /* AudioFileExampleView.swift */; };
 		4F35978325D564B9001340E4 /* AudioFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F35978225D564B9001340E4 /* AudioFileView.swift */; };
 		4F43E06C25E7E7BE00196594 /* LittleThings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06425E7E7BE00196594 /* LittleThings.mp3 */; };
@@ -56,6 +57,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F07C0F325E98F05009A5B73 /* Modulation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modulation.swift; sourceTree = "<group>"; };
 		4F21179425D5675A002DFB62 /* AudioFileExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileExampleView.swift; sourceTree = "<group>"; };
 		4F21179725D5BC67002DFB62 /* AudioRecipes.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AudioRecipes.entitlements; sourceTree = "<group>"; };
 		4F35978225D564B9001340E4 /* AudioFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFileView.swift; sourceTree = "<group>"; };
@@ -119,6 +121,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4F07C0F225E98EF7009A5B73 /* Modulation */ = {
+			isa = PBXGroup;
+			children = (
+				4F07C0F325E98F05009A5B73 /* Modulation.swift */,
+			);
+			path = Modulation;
+			sourceTree = "<group>";
+		};
 		4F35978125D564A0001340E4 /* AudioFileView */ = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +185,7 @@
 		4F8174C625CC2C750023383D /* AudioRecipes */ = {
 			isa = PBXGroup;
 			children = (
+				4F07C0F225E98EF7009A5B73 /* Modulation */,
 				4F43E06225E7E7BE00196594 /* TestAudio */,
 				4F21179725D5BC67002DFB62 /* AudioRecipes.entitlements */,
 				4F8174C725CC2C750023383D /* AudioRecipesApp.swift */,
@@ -421,6 +432,7 @@
 				FA3827F925E353E6006C4377 /* RollingAudioPlayerView.swift in Sources */,
 				4F8174EA25CC2DF10023383D /* TapView.swift in Sources */,
 				4F35978325D564B9001340E4 /* AudioFileView.swift in Sources */,
+				4F07C0F425E98F05009A5B73 /* Modulation.swift in Sources */,
 				4F81751425CC2F360023383D /* FFTExampleView.swift in Sources */,
 				4F8174FF25CC2E880023383D /* SpectrumView.swift in Sources */,
 				4F81750B25CC2EEA0023383D /* WavetableView.swift in Sources */,

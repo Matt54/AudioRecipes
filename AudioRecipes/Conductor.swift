@@ -8,7 +8,7 @@ class Conductor : ObservableObject{
     /// Single shared data model
     static let shared = Conductor()
     
-    var testInputType : TestInputType = .player{
+    var testInputType : TestInputType = .oscillator{
         didSet{
             setupAudioType()
         }
@@ -42,7 +42,7 @@ class Conductor : ObservableObject{
     
     let secondCombinationMixer : Mixer
     
-    let filter : LowPassButterworthFilter
+    let filter : LowPassFilter
     
     /// limiter to prevent excessive volume at the output - just in case, it's the music producer in me :)
     let outputLimiter : PeakLimiter
@@ -53,7 +53,11 @@ class Conductor : ObservableObject{
     
     var timer : RepeatingTimer
     
+    var modulation : Modulation
+    
     init(){
+        
+        modulation = Modulation(frequency: 0.1, table: Table.init(.positiveSine))
         
         do{
             try AudioKit.Settings.session.setCategory(.playAndRecord, options: .defaultToSpeaker)
@@ -83,10 +87,11 @@ class Conductor : ObservableObject{
         combinationMixer = Mixer(playerMixer)
         combinationMixer.addInput(silentMicMixer)
         combinationMixer.addInput(oscMixer)
+        combinationMixer.addInput(modulation)
         
         panner = Panner(combinationMixer)
         secondCombinationMixer = Mixer(panner)
-        filter = LowPassButterworthFilter(secondCombinationMixer)
+        filter = LowPassFilter(secondCombinationMixer)
         
         // route the silent Mixer to the limiter (you must always route the audio chain to AudioKit.output)
         outputLimiter = PeakLimiter(filter)
@@ -110,12 +115,17 @@ class Conductor : ObservableObject{
         //filter.resonance = 10
         
         timer = RepeatingTimer(timeInterval: 0.008)
-        timer.eventHandler = fire
+        
+        //timer.eventHandler = fire
 
         waveforms = createWavetableArray(forResource: "Sludgecrank.wav")
         calculateActualWaveTable(Int(wavePosition))
         timer.resume()
         setupAudioType()
+        
+        //modulation.modulationCallback = modulationUpdate
+        filter.cutoffFrequency = 20_000
+        setupFilterModulation()
     }
     
     enum TestInputType {
@@ -125,6 +135,55 @@ class Conductor : ObservableObject{
     }
     
     var timerReverse: Bool = false
+    
+    func setupFilterModulation() {
+
+        let node = filter
+        
+        let auAudioUnit = node.avAudioUnitOrNode.auAudioUnit
+        guard let paramTree = auAudioUnit.parameterTree else { return }
+        
+        // Not proud of this block - there's gotta be a clean approach to this
+        var cutoffOptional :AUParameter?
+
+        for parameter in paramTree.allParameters {
+            if parameter.identifier == "0" { // I want to look for a 'cutoff'
+                cutoffOptional = parameter
+            }
+        }
+        guard let cutoff = cutoffOptional else { return }
+        modulation.addModulationTarget(auParameter: cutoff, startValue: 20_000, endValue: 100, isLogRange: true)
+
+    }
+    
+    func modulationUpdate(_ newValue: Float64) {
+        DispatchQueue.main.async {
+            //do something
+            var newIndex = newValue * Double(self.waveforms.count)
+            
+            if newIndex < 0 {
+                newIndex = 0
+            } else if Int(newIndex) > self.waveforms.count-1 {
+                newIndex = Double(self.waveforms.count-1)
+            }
+            
+            self.wavePosition = newIndex
+            
+            /*if !self.timerReverse{
+                if Int(self.wavePosition) >= self.numberOfWavePositions-1 {
+                    self.timerReverse.toggle()
+                } else {
+                    self.wavePosition += 1
+                }
+            } else {
+                if Int(self.wavePosition) <= 0 {
+                    self.timerReverse.toggle()
+                } else {
+                    self.wavePosition -= 1
+                }
+            }*/
+        }
+    }
     
     @objc func fire()
     {

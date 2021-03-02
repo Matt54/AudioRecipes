@@ -34,7 +34,6 @@ class FilterModel: ObservableObject {
             guard let cutoff = cutoffOptional else { return }
             guard let resonance = resonanceOptional else { return }
             
-            
             self.cutoff = Double(cutoff.value)
             self.resonance = Double(resonance.value)
             
@@ -101,7 +100,7 @@ struct FilterView: View {
         let maxSpan: CGFloat = 170.0
         
         let x = logMap(n: filterModel.cutoff, start1: filterModel.minFreq, stop1: filterModel.maxFreq, start2: 0.0, stop2: Double(width))
-        let y = map(n: Double(filterModel.resonance+25.0), start1: -10.0, stop1: 10.0, start2: Double(height), stop2: 0.0)
+        let y = map(n: Double(filterModel.resonance), start1: -10.0, stop1: 10.0, start2: Double(height), stop2: 0.0)
         
         let amplitudeKneeDrop = 12.0
         let kneeDropDecades = amplitudeKneeDrop / filterSlope
@@ -190,6 +189,18 @@ struct FilterView: View {
 struct FilterView_Previews: PreviewProvider {
     
     static var previews: some View {
+        let lpf = LowPassFilter(Mixer())
+        //lpf.cutoffFrequency = 1270
+        /*
+        return FilterView(node: lpf).previewLayout(.fixed(width: 800, height: 500))*/
+        FilterView(node: lpf)
+            .previewLayout(.fixed(width: 600, height: 250))
+    }
+}
+
+/*struct FilterView2_Previews: PreviewProvider {
+    
+    static var previews: some View {
         let lpf = LowPassButterworthFilter(Mixer())
         //lpf.cutoffFrequency = 1270
         /*
@@ -197,7 +208,7 @@ struct FilterView_Previews: PreviewProvider {
         FilterView2(node: lpf)
             .previewLayout(.fixed(width: 600, height: 250))
     }
-}
+}*/
 
 class FilterModel2: ObservableObject {
     var node: LowPassButterworthFilter?
