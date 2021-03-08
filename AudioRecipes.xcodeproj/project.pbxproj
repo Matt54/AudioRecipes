@@ -43,6 +43,7 @@
 		4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752225CC2FF70023383D /* CustomOscillator.swift */; };
 		4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */; };
 		4F81752E25CC39750023383D /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 4F81752D25CC39750023383D /* Numerics */; };
+		4F825E2525F475C80094F8C2 /* PrimitiveExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F825E2425F475C80094F8C2 /* PrimitiveExtensions.swift */; };
 		4F9CAD3125DFEA2B00BEA393 /* CPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */; };
 		4F9CAD3525E0A0D700BEA393 /* Marquee in Frameworks */ = {isa = PBXBuildFile; productRef = 4F9CAD3425E0A0D700BEA393 /* Marquee */; };
 		4FACB49225DB5DA600CF2370 /* WavetableHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */; };
@@ -94,6 +95,7 @@
 		4F81751F25CC2FCA0023383D /* customosc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = customosc.c; sourceTree = "<group>"; };
 		4F81752225CC2FF70023383D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
 		4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
+		4F825E2425F475C80094F8C2 /* PrimitiveExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveExtensions.swift; sourceTree = "<group>"; };
 		4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPHelpers.swift; sourceTree = "<group>"; };
 		4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableHelpers.swift; sourceTree = "<group>"; };
 		4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisHelpers.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */,
 				4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */,
 				4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */,
+				4F825E2425F475C80094F8C2 /* PrimitiveExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 				4F21179525D5675A002DFB62 /* AudioFileExampleView.swift in Sources */,
 				4F8174CA25CC2C750023383D /* ContentView.swift in Sources */,
 				4F8174E025CC2D730023383D /* Conductor.swift in Sources */,
+				4F825E2525F475C80094F8C2 /* PrimitiveExtensions.swift in Sources */,
 				FA3827FD25E35637006C4377 /* RollingAudioPlayerExampleView.swift in Sources */,
 				4FB053DF25D40DD500E6F450 /* RepeatingTimer.swift in Sources */,
 				4FACB49225DB5DA600CF2370 /* WavetableHelpers.swift in Sources */,

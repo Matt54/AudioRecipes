@@ -131,7 +131,7 @@ struct FilterView: View {
         points.append(CGPoint(x: 0.0, y: Double(height/2)))
         
         return ZStack{
-            Path{ path in
+            /*Path{ path in
                 for (index, point) in points.enumerated() {
                     if index == 0 {
                         path.move(to: point)
@@ -147,7 +147,7 @@ struct FilterView: View {
                     }
                 }
             }
-            .fill(fillColor)
+            .fill(fillColor)*/
             
             Path{ path in
                 for (index, point) in points.enumerated() {
