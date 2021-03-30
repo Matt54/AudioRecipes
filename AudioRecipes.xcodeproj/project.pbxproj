@@ -15,6 +15,7 @@
 		4F43E06F25E7E7BE00196594 /* Break Loose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06725E7E7BE00196594 /* Break Loose.mp3 */; };
 		4F43E07025E7E7BE00196594 /* Smoove Operator.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06825E7E7BE00196594 /* Smoove Operator.mp3 */; };
 		4F43E07225E7E7BE00196594 /* Sludgecrank.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4F43E06B25E7E7BE00196594 /* Sludgecrank.wav */; };
+		4F4CF1E325FE636300D66355 /* DragNDrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4CF1E225FE636300D66355 /* DragNDrop.swift */; };
 		4F8174C825CC2C750023383D /* AudioRecipesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174C725CC2C750023383D /* AudioRecipesApp.swift */; };
 		4F8174CA25CC2C750023383D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8174C925CC2C750023383D /* ContentView.swift */; };
 		4F8174CC25CC2C750023383D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F8174CB25CC2C750023383D /* Assets.xcassets */; };
@@ -48,12 +49,16 @@
 		4F9CAD3525E0A0D700BEA393 /* Marquee in Frameworks */ = {isa = PBXBuildFile; productRef = 4F9CAD3425E0A0D700BEA393 /* Marquee */; };
 		4FACB49225DB5DA600CF2370 /* WavetableHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */; };
 		4FACB49525DB659A00CF2370 /* AudioAnalysisHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */; };
+		4FAE450125FA57A800FC2A14 /* ModFrequencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAE450025FA57A800FC2A14 /* ModFrequencyView.swift */; };
+		4FAE450825FA591300FC2A14 /* ModulationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAE450725FA591300FC2A14 /* ModulationExampleView.swift */; };
 		4FB053DF25D40DD500E6F450 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB053DE25D40DD500E6F450 /* RepeatingTimer.swift */; };
 		4FF23FF925D2C2B1002EC8C1 /* WavetableArrayExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */; };
 		FA3827F925E353E6006C4377 /* RollingAudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */; };
 		FA3827FD25E35637006C4377 /* RollingAudioPlayerExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */; };
 		FAA2D24C25D83B8900279A11 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA2D24B25D83B8900279A11 /* AudioPlayerView.swift */; };
 		FAA8AEA025D851390003C64D /* AudioPlayerExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAA8AE9F25D851390003C64D /* AudioPlayerExampleView.swift */; };
+		FAB2B3AD2606D7B500FEA4C1 /* KnobDrawn.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB2B3AC2606D7B500FEA4C1 /* KnobDrawn.swift */; };
+		FAB2B3B22608342500FEA4C1 /* KnobExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB2B3B12608342500FEA4C1 /* KnobExampleView.swift */; };
 		FAFB4C0225D22BDE00F64CB1 /* WavetableArrayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFB4C0125D22BDE00F64CB1 /* WavetableArrayView.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +72,7 @@
 		4F43E06725E7E7BE00196594 /* Break Loose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Break Loose.mp3"; sourceTree = "<group>"; };
 		4F43E06825E7E7BE00196594 /* Smoove Operator.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Smoove Operator.mp3"; sourceTree = "<group>"; };
 		4F43E06B25E7E7BE00196594 /* Sludgecrank.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Sludgecrank.wav; sourceTree = "<group>"; };
+		4F4CF1E225FE636300D66355 /* DragNDrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragNDrop.swift; sourceTree = "<group>"; };
 		4F8174C425CC2C750023383D /* AudioRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F8174C725CC2C750023383D /* AudioRecipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecipesApp.swift; sourceTree = "<group>"; };
 		4F8174C925CC2C750023383D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -99,12 +105,16 @@
 		4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPHelpers.swift; sourceTree = "<group>"; };
 		4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableHelpers.swift; sourceTree = "<group>"; };
 		4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisHelpers.swift; sourceTree = "<group>"; };
+		4FAE450025FA57A800FC2A14 /* ModFrequencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModFrequencyView.swift; sourceTree = "<group>"; };
+		4FAE450725FA591300FC2A14 /* ModulationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulationExampleView.swift; sourceTree = "<group>"; };
 		4FB053DE25D40DD500E6F450 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
 		4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayExampleView.swift; sourceTree = "<group>"; };
 		FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerView.swift; sourceTree = "<group>"; };
 		FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerExampleView.swift; sourceTree = "<group>"; };
 		FAA2D24B25D83B8900279A11 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
 		FAA8AE9F25D851390003C64D /* AudioPlayerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerExampleView.swift; sourceTree = "<group>"; };
+		FAB2B3AC2606D7B500FEA4C1 /* KnobDrawn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnobDrawn.swift; sourceTree = "<group>"; };
+		FAB2B3B12608342500FEA4C1 /* KnobExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KnobExampleView.swift; sourceTree = "<group>"; };
 		FAFB4C0125D22BDE00F64CB1 /* WavetableArrayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -168,6 +178,14 @@
 			path = Waveforms;
 			sourceTree = "<group>";
 		};
+		4F4CF1E125FE634E00D66355 /* DragNDrop */ = {
+			isa = PBXGroup;
+			children = (
+				4F4CF1E225FE636300D66355 /* DragNDrop.swift */,
+			);
+			path = DragNDrop;
+			sourceTree = "<group>";
+		};
 		4F8174BB25CC2C750023383D = {
 			isa = PBXGroup;
 			children = (
@@ -213,6 +231,9 @@
 		4F8174E225CC2DA20023383D /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				FAB2B3AB2606D73600FEA4C1 /* Knob */,
+				4F4CF1E125FE634E00D66355 /* DragNDrop */,
+				4FAE44FF25FA579500FC2A14 /* Modulation */,
 				FA3827F725E353C2006C4377 /* RollingAudioPlayerView */,
 				FAA2D24A25D83B6D00279A11 /* AudioPlayerView */,
 				FAFB4C0025D22B9E00F64CB1 /* WavetableArrayView */,
@@ -309,6 +330,15 @@
 			path = CustomOscillator;
 			sourceTree = "<group>";
 		};
+		4FAE44FF25FA579500FC2A14 /* Modulation */ = {
+			isa = PBXGroup;
+			children = (
+				4FAE450025FA57A800FC2A14 /* ModFrequencyView.swift */,
+				4FAE450725FA591300FC2A14 /* ModulationExampleView.swift */,
+			);
+			path = Modulation;
+			sourceTree = "<group>";
+		};
 		FA3827F725E353C2006C4377 /* RollingAudioPlayerView */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,6 +356,15 @@
 				FAA8AE9F25D851390003C64D /* AudioPlayerExampleView.swift */,
 			);
 			path = AudioPlayerView;
+			sourceTree = "<group>";
+		};
+		FAB2B3AB2606D73600FEA4C1 /* Knob */ = {
+			isa = PBXGroup;
+			children = (
+				FAB2B3AC2606D7B500FEA4C1 /* KnobDrawn.swift */,
+				FAB2B3B12608342500FEA4C1 /* KnobExampleView.swift */,
+			);
+			path = Knob;
 			sourceTree = "<group>";
 		};
 		FAFB4C0025D22B9E00F64CB1 /* WavetableArrayView */ = {
@@ -426,6 +465,7 @@
 			files = (
 				4F81750225CC2E9A0023383D /* SpectrumPopupView.swift in Sources */,
 				FAA8AEA025D851390003C64D /* AudioPlayerExampleView.swift in Sources */,
+				4FAE450125FA57A800FC2A14 /* ModFrequencyView.swift in Sources */,
 				4F8174F325CC2E380023383D /* FilterView.swift in Sources */,
 				4F81750825CC2EB90023383D /* SpectrumExampleView.swift in Sources */,
 				4F81751825CC2F6B0023383D /* MorphableShape.swift in Sources */,
@@ -456,8 +496,12 @@
 				4F81750525CC2EA90023383D /* CircleCursorView.swift in Sources */,
 				4F8174F025CC2E210023383D /* AmplitudeExampleView.swift in Sources */,
 				FAA2D24C25D83B8900279A11 /* AudioPlayerView.swift in Sources */,
+				FAB2B3AD2606D7B500FEA4C1 /* KnobDrawn.swift in Sources */,
 				4F8174F925CC2E620023383D /* SpectrogramView.swift in Sources */,
 				4F8174F625CC2E460023383D /* FilterExampleView.swift in Sources */,
+				4F4CF1E325FE636300D66355 /* DragNDrop.swift in Sources */,
+				FAB2B3B22608342500FEA4C1 /* KnobExampleView.swift in Sources */,
+				4FAE450825FA591300FC2A14 /* ModulationExampleView.swift in Sources */,
 				4F81751B25CC2F7C0023383D /* ColorHelpers.swift in Sources */,
 				4FACB49525DB659A00CF2370 /* AudioAnalysisHelpers.swift in Sources */,
 				4FF23FF925D2C2B1002EC8C1 /* WavetableArrayExampleView.swift in Sources */,

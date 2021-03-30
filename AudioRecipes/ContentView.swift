@@ -40,6 +40,14 @@ struct ContentView: View {
                     Image(systemName: "waveform")
                     Text("Rolling Audio Player View")
                 }
+                /*NavigationLink(destination: ModulationExampleView()){
+                    Image(systemName: "cursorarrow.click.badge.clock")
+                    Text("Modulation View")
+                }*/
+                NavigationLink(destination: KnobExampleView()){
+                    Image(systemName: "cursorarrow.click.badge.clock")
+                    Text("Knob View")
+                }
             }
             .navigationBarTitle("AudioKitUI")
         }

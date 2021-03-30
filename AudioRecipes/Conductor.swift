@@ -57,6 +57,7 @@ class Conductor : ObservableObject{
     //var timer : RepeatingTimer
     
     var modulationManager : ModulationManager
+    var modulations: [Modulation] = []
     
     //var modulation : ModulationPOC
     
@@ -120,25 +121,28 @@ class Conductor : ObservableObject{
             assert(false, error.localizedDescription)
         }
         
+        // get the sample rate...
         let audioEngine = engine.avEngine
         let outputNode = audioEngine.outputNode
         let format = outputNode.inputFormat(forBus: 0)
-        
         sampleRate = format.sampleRate
+        
+        // setup the modulation manager - notice that it wants the sample rate - there must be a clean way to do this for a node that doesn't rely on the above
         modulationManager = ModulationManager(sampleRate: sampleRate)
         
+        // modulations are created asyncronously - this delegate allows you to collect them once created - this sucks, but for now Swift has no async/await
+        ModulationManager.modulationHandoffHandler = storeModulation
         
+        // connect modulation manager to audio chain
+        combinationMixer.addInput(modulationManager)
         
-        //combinationMixer.addInput(modulation)
-        
-        osc.amplitude = 0.2
+        osc.amplitude = 1.0
         osc.frequency = 100
         silentMicMixer.volume = 0.0
         filter.cutoffFrequency = 10_000
-        filter.resonance = 10
+        filter.resonance = 5
         
         //timer = RepeatingTimer(timeInterval: 0.002)
-        
         //timer.eventHandler = fire
 
         waveforms = createWavetableArray(forResource: "Sludgecrank.wav")
@@ -149,19 +153,14 @@ class Conductor : ObservableObject{
         //modulation.modulationCallback = modulationUpdate
         //filter.cutoffFrequency = 0 //18_000
         
+        setupFrequencyModulation(osc)
         setupFilterModulation()
         
         osc.amplitude = 0.1
-        //noise.amplitude = 1.0
         setupAmplitudeModulation(osc)
+        
         //outputLimiter.preGain = -10
         //setupLimiterGainModulation(node: outputLimiter)
-        //printAllParameters(osc)
-        printAllParameters(outputLimiter)
-        
-        combinationMixer.addInput(modulationManager)
-        
-        setupFrequencyModulation(osc)
     }
     
     enum TestInputType {
@@ -186,13 +185,8 @@ class Conductor : ObservableObject{
         }
     }
     
-    func changeFrequencyOfNodeParameter(_ node: Node) {
-        let auAudioUnit = osc.avAudioUnitOrNode.auAudioUnit
-        //auAudioUnit.
-    }
-    
-    func changeFrequencyOfOscillatorNodeByParameter(_ osc: Oscillator) {
-        let auAudioUnit = osc.avAudioUnitOrNode.auAudioUnit
+    func storeModulation(_ modulation: Modulation) {
+        modulations.append(modulation)
     }
     
     func setupFrequencyModulation(_ node: Node) {
@@ -207,12 +201,8 @@ class Conductor : ObservableObject{
             }
         }
         guard let frequency = frequencyOptional else { return }
-        print(frequency.value)
-        print(frequency.minValue)
-        print(frequency.maxValue)
-        let mod = modulationManager.createNewModulation(frequency: 2, table: Table.init(.positiveSine))
-        modulationManager.addParameterToModulation(modulation: mod, auParameter: frequency, isLogRange: true)
-        modulationManager.setModulationMagnitudeToParameterValue(modulation: mod, auParameter: frequency, parameterValue: 500)
+        
+        modulationManager.createModulation(frequency: 2, table: Table.init(.positiveSine), auParameter: frequency, isLogRange: true, parameterValue: 500, name: "Frequency Mod")
     }
     
     func setupAmplitudeModulation(_ node: Node) {
@@ -220,19 +210,15 @@ class Conductor : ObservableObject{
         guard let paramTree = auAudioUnit.parameterTree else { return }
         
         // Not proud of this block - there's gotta be a clean approach to this
-        var frequencyOptional :AUParameter?
+        var amplitudeOptional :AUParameter?
         for parameter in paramTree.allParameters {
             if parameter.identifier == "amplitude" {
-                frequencyOptional = parameter
+                amplitudeOptional = parameter
             }
         }
-        guard let frequency = frequencyOptional else { return }
-        print(frequency.value)
-        print(frequency.minValue)
-        print(frequency.maxValue)
-        let mod = modulationManager.createNewModulation(frequency: 8, table: Table.init(.positiveSquare))
-        modulationManager.addParameterToModulation(modulation: mod, auParameter: frequency, isLogRange: false)
-        modulationManager.setModulationMagnitudeToParameterValue(modulation: mod, auParameter: frequency, parameterValue: 1)
+        guard let amplitude = amplitudeOptional else { return }
+        
+        modulationManager.createModulation(frequency: 8, table: Table.init(.positiveSquare), auParameter: amplitude, parameterValue: 0.01, name: "Amplitude Mod: ")
     }
     
     func setupFilterModulation() {
@@ -255,16 +241,19 @@ class Conductor : ObservableObject{
         guard let cutoff = cutoffOptional else { return }
         guard let resonance = resonanceOptional else { return }
         
-        let mod = modulationManager.createNewModulation(frequency: 1, table: Table.init(.positiveSine))
+        /*let mod = modulationManager.createNewModulation(frequency: 1, table: Table.init(.positiveSine))
         modulationManager.addParameterToModulation(modulation: mod, auParameter: cutoff, isLogRange: true)
         modulationManager.setModulationMagnitudeToParameterValue(modulation: mod, auParameter: cutoff, parameterValue: 750)
         
         let mod2 = modulationManager.createNewModulation(frequency: 2, table: Table.init(.positiveSine))
         modulationManager.addParameterToModulation(modulation: mod2, auParameter: cutoff, isLogRange: true)
-        modulationManager.adjustMagnitudeForParameterModulation(modulation: mod2, auParameter: cutoff, newMagnitude: -0.1)
+        modulationManager.adjustMagnitudeForParameterModulation(modulation: mod2, auParameter: cutoff, newMagnitude: -0.1)*/
         
-        modulationManager.addParameterToModulation(modulation: mod2, auParameter: resonance)
-        modulationManager.adjustMagnitudeForParameterModulation(modulation: mod2, auParameter: resonance, newMagnitude: 0.1)
+        modulationManager.createModulation(frequency: 1, table: Table.init(.positiveSine), auParameter: cutoff, isLogRange: true, parameterValue: 100, name: "Cutoff Mod: ")
+        //modulationManager.createModulation(frequency: 2, table: Table.init(.positiveSine), auParameter: cutoff, isLogRange: true, magnitude: -0.1)
+        
+        /*modulationManager.addParameterToModulation(modulation: mod2, auParameter: resonance)
+        modulationManager.adjustMagnitudeForParameterModulation(modulation: mod2, auParameter: resonance, newMagnitude: 0.1)*/
 
         //let modulationTarget = modulation.addModulationTarget(auParameter: cutoff, startValue: 20_000, endValue: 1000, isLogRange: true)
         //modulationTarget.setMagnitudeByParameterValue(100)
@@ -285,9 +274,12 @@ class Conductor : ObservableObject{
         }
         guard let gain = gainOptional else { return }
         
-        let mod = modulationManager.createNewModulation(frequency: 1, table: Table.init(.positiveSine))
+        /*let mod = modulationManager.createNewModulation(frequency: 1, table: Table.init(.positiveSine))
         modulationManager.addParameterToModulation(modulation: mod, auParameter: gain)
-        modulationManager.setModulationMagnitudeToParameterValue(modulation: mod, auParameter: gain, parameterValue: 10)
+        modulationManager.setModulationMagnitudeToParameterValue(modulation: mod, auParameter: gain, parameterValue: 10)*/
+        
+        modulationManager.createModulation(frequency: 1, table: Table.init(.positiveSine), auParameter: gain, magnitude: 10)
+        
     }
     
     func modulationUpdate(_ newValue: Float64) {

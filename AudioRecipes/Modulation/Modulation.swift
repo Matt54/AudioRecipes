@@ -2,19 +2,30 @@ import Foundation
 import AudioKit
 import AVFoundation
 
+
+// MARK: ParameterInfo
 /// things we need to remember about a AUParameter
-struct ParameterInfo{
+struct ParameterModulationInfo{
     var anchorValue : Float // basically just the starting AUParameter.value before we modulate it (think position a knob is pointing)
     var isLogRange : Bool
+    var isBypassed : Bool
 }
 
+// MARK: ModulationManager
 /// keeps track of many modulations - glue for the many to many relationship between modulations and AUParameters
-class ModulationManager : Node {
+final class ModulationManager : Node {
     
     fileprivate var lfoManager : LFOManager
-    var anchorValueDictionary = [String: ParameterInfo]()
+    var anchorValueDictionary = [String: ParameterModulationInfo]()
     var modulations : [Modulation] = []
     var auParameters : [AUParameter] = []
+    
+    var newModulations : [Modulation] = []
+    var isUpdating : Bool = false
+    var canUpdate : Bool = false
+    
+    static let serialQueue = DispatchQueue(label: "modulation.serial.queue")
+    static var modulationHandoffHandler: ((Modulation) -> Void) = { _ in }
     
     init(sampleRate: Double) {
         lfoManager = LFOManager(sampleRate: sampleRate)
@@ -22,36 +33,114 @@ class ModulationManager : Node {
         lfoManager.lookupsCompleteHandler = modulateMatrix
     }
     
-    func createNewModulation(frequency: Float = 1, table: Table) -> Modulation {
-        let newModulation = Modulation(frequency: frequency, table: table)
-        modulations.append(newModulation)
-        let lfo = newModulation.getLFO()
-        lfoManager.addLFO(lfo: lfo)
-        return newModulation
+    func createModulation(frequency: Float, table: Table, auParameter: AUParameter, isLogRange: Bool = false, magnitude: Float = 0, name: String = "") {
+        ModulationManager.serialQueue.async {
+            var modulationName = name
+            if name == "" {
+                modulationName = String(Modulation.modulationCount)
+            }
+            Modulation.modulationCount += 1
+            
+            let modulation = Modulation(frequency: frequency, table: table, name: modulationName)
+            self.modulations.append(modulation)
+            let lfo = modulation.getLFO()
+            self.lfoManager.addLFO(lfo: lfo)
+            self.addParameterToModulation(modulation: modulation, auParameter: auParameter)
+            self.adjustMagnitudeForParameterModulation(modulation: modulation, auParameter: auParameter, newMagnitude: magnitude)
+            ModulationManager.modulationHandoffHandler(modulation)
+        }
+    }
+    
+    func createModulation(frequency: Float, table: Table, auParameter: AUParameter, isLogRange: Bool = false, parameterValue: Float, name: String = "") {
+        ModulationManager.serialQueue.async {
+            var modulationName = name
+            if name == "" {
+                modulationName = String(Modulation.modulationCount)
+            }
+            Modulation.modulationCount += 1
+            
+            let modulation = Modulation(frequency: frequency, table: table, name: modulationName)
+            self.modulations.append(modulation)
+            let lfo = modulation.getLFO()
+            self.lfoManager.addLFO(lfo: lfo)
+            self.addParameterToModulation(modulation: modulation, auParameter: auParameter)
+            self.setModulationMagnitudeToParameterValue(modulation: modulation, auParameter: auParameter, parameterValue: parameterValue)
+            ModulationManager.modulationHandoffHandler(modulation)
+        }
+    }
+    
+    func createNewModulation(frequency: Float = 1, table: Table) {
+        ModulationManager.serialQueue.async {
+            let newModulation = Modulation(frequency: frequency, table: table)
+            self.modulations.append(newModulation)
+            let lfo = newModulation.getLFO()
+            self.lfoManager.addLFO(lfo: lfo)
+        }
     }
     
     func addParameterToModulation(modulation: Modulation, auParameter: AUParameter, isLogRange: Bool = false) {
-        modulation.addModulationTarget(auParameter: auParameter, isLogRange: isLogRange)
-        //need to know if this is a parameter we haven't seen yet to hold the reference and anchor value
-        if !auParameters.contains(auParameter) {
-            auParameters.append(auParameter)
-            let anchorValue = calculateRangeValueFromParameterValue(auParameter.value, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: isLogRange)
-            let parameterInfo = ParameterInfo(anchorValue: anchorValue, isLogRange: isLogRange)
-            anchorValueDictionary[auParameter.keyPath] = parameterInfo
+        ModulationManager.serialQueue.async {
+            modulation.addModulationTarget(auParameter: auParameter, isLogRange: isLogRange)
+            //need to know if this is a parameter we haven't seen yet to hold the reference and anchor value
+            if !self.auParameters.contains(auParameter) {
+                self.auParameters.append(auParameter)
+                let anchorValue = self.calculateRangeValueFromParameterValue(auParameter.value, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: isLogRange)
+                let parameterInfo = ParameterModulationInfo(anchorValue: anchorValue, isLogRange: isLogRange, isBypassed: false)
+                self.anchorValueDictionary[auParameter.keyPath] = parameterInfo
+            }
         }
     }
     
     func adjustMagnitudeForParameterModulation(modulation: Modulation, auParameter: AUParameter, newMagnitude: Float) {
-        if let mod = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
-            mod.modulationMagnitude = newMagnitude
+        ModulationManager.serialQueue.async {
+            if let mod = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
+                mod.modulationMagnitude = newMagnitude
+            }
         }
     }
     
     func setModulationMagnitudeToParameterValue(modulation: Modulation, auParameter: AUParameter, parameterValue: Float){
-        if let modTarget = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
-            let rangeValue = calculateRangeValueFromParameterValue(parameterValue, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: modTarget.isLogRange)
-            if let parameterInfo = anchorValueDictionary[auParameter.keyPath] {
-                modTarget.modulationMagnitude = rangeValue - parameterInfo.anchorValue
+        ModulationManager.serialQueue.async {
+            if let modTarget = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
+                let rangeValue = self.calculateRangeValueFromParameterValue(parameterValue, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: modTarget.isLogRange)
+                if let parameterInfo = self.anchorValueDictionary[auParameter.keyPath] {
+                    modTarget.modulationMagnitude = rangeValue - parameterInfo.anchorValue
+                }
+            }
+        }
+    }
+
+    func addParameterToModulation(modulationIndex: Int, auParameter: AUParameter, isLogRange: Bool = false) {
+        ModulationManager.serialQueue.async {
+            let modulation = self.modulations[modulationIndex]
+            modulation.addModulationTarget(auParameter: auParameter, isLogRange: isLogRange)
+            //need to know if this is a parameter we haven't seen yet to hold the reference and anchor value
+            if !self.auParameters.contains(auParameter) {
+                self.auParameters.append(auParameter)
+                let anchorValue = self.calculateRangeValueFromParameterValue(auParameter.value, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: isLogRange)
+                let parameterInfo = ParameterModulationInfo(anchorValue: anchorValue, isLogRange: isLogRange, isBypassed: false)
+                self.anchorValueDictionary[auParameter.keyPath] = parameterInfo
+            }
+        }
+    }
+    
+    func adjustMagnitudeForParameterModulation(modulationIndex: Int, auParameter: AUParameter, newMagnitude: Float) {
+        ModulationManager.serialQueue.async {
+            let modulation = self.modulations[modulationIndex]
+            if let mod = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
+                mod.modulationMagnitude = newMagnitude
+            }
+        }
+    }
+    
+    func setModulationMagnitudeToParameterValue(modulationIndex: Int, auParameter: AUParameter, parameterValue: Float){
+        ModulationManager.serialQueue.async {
+            let modulation = self.modulations[modulationIndex]
+            if let modTarget = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
+                let rangeValue = self.calculateRangeValueFromParameterValue(parameterValue, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: modTarget.isLogRange)
+                if let parameterInfo = self.anchorValueDictionary[auParameter.keyPath] {
+                    modTarget.modulationMagnitude = rangeValue - parameterInfo.anchorValue
+                }
             }
         }
     }
@@ -73,46 +162,75 @@ class ModulationManager : Node {
     }
     
     func modulateMatrix() {
-        for auParameter in auParameters {
-            
-            var modValue : Float = 0
-            for modulation in modulations {
-                modValue += modulation.getModifierValueForParameter(auParameterKey: auParameter.keyPath)
+        ModulationManager.serialQueue.async {
+            for auParameter in self.auParameters {
+                let parameterInfo = self.anchorValueDictionary[auParameter.keyPath]!
+                if !parameterInfo.isBypassed {
+                    var modValue : Float = 0
+                    for modulation in self.modulations {
+                        if modulation.isCurrentlyRunning() {
+                            modValue += modulation.getModifierValueForParameter(auParameterKey: auParameter.keyPath)
+                        }
+                    }
+                    let rangeValue = parameterInfo.anchorValue + modValue
+                    let parameterValue = self.calculateParameterValueFromRangeValue(rangeValue, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: parameterInfo.isLogRange)
+                    if auParameter.minValue > parameterValue {
+                        auParameter.value = auParameter.minValue
+                    } else if auParameter.maxValue < parameterValue {
+                        auParameter.value = auParameter.maxValue
+                    } else {
+                        auParameter.value = parameterValue
+                    }
+                }
             }
-            
-            let parameterInfo = anchorValueDictionary[auParameter.keyPath]!
-            let rangeValue = parameterInfo.anchorValue + modValue
-            let parameterValue = calculateParameterValueFromRangeValue(rangeValue, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: parameterInfo.isLogRange)
-            
-            if auParameter.minValue > parameterValue {
-                auParameter.value = auParameter.minValue
-            } else if auParameter.maxValue < parameterValue {
-                auParameter.value = auParameter.maxValue
-            } else {
-                auParameter.value = parameterValue
-            }
-            
         }
     }
-
 }
 
+// MARK: Modulation
 /// A modulation takes an LFO value and applies it to one or more Modulation Targets (can be thought of as simply AUParameters - there's just some extra book keeping required)
-class Modulation {
+final class Modulation : ObservableObject {
     
-    
+    static var modulationCount = 0
+    var name: String
     var targets: [ModulationTarget] = []
     
     private var lfo : LFO
-    var frequency : Float {
+    
+    private var isRunning : Bool = true
+    @Published var isOn : Bool = true {
+        didSet {
+            // unsafe - needs to happen on modulation thread
+            ModulationManager.serialQueue.async {
+                self.isRunning = self.isOn
+            }
+        }
+    }
+    
+    // safe to change modulation frequency from outside
+    @Published var frequency : Float {
         didSet{
-            lfo.frequency = frequency
+            
+            // unsafe to change lfo frequency - needs to happen on modulation thread
+            ModulationManager.serialQueue.async {
+                self.lfo.frequency = self.frequency
+            }
+            
         }
     }
     
     init(frequency: Float, table: Table = Table.init(.positiveSawtooth)){
         lfo = LFO(frequency: frequency, table: table)
         self.frequency = frequency
+        self.name = String(Modulation.modulationCount)
+        Modulation.modulationCount += 1
+    }
+    
+    init(frequency: Float, table: Table = Table.init(.positiveSawtooth), name: String){
+        lfo = LFO(frequency: frequency, table: table)
+        self.frequency = frequency
+        self.name = name
+        //Modulation.modulationCount += 1
     }
 
     func addModulationTarget(auParameter: AUParameter, isLogRange: Bool = false){
@@ -124,6 +242,10 @@ class Modulation {
         return lfo
     }
     
+    func isCurrentlyRunning() -> Bool {
+        return isRunning
+    }
+    
     func getModifierValueForParameter(auParameterKey: String) -> Float {
         if let modulationTarget = targets.first(where: {$0.auParameterKey == auParameterKey}){
             return modulationTarget.getModulationContribution(Float(lfo.lookupValue))
@@ -132,7 +254,8 @@ class Modulation {
         }
     }
     
-    class ModulationTarget {
+    // MARK: ModulationTarget
+    final class ModulationTarget {
         /// 0 to 1.0 range
         /// anchorValue + modulationMagnitude must always be in a 0 to 1 range
         var anchorValue : Float
@@ -145,6 +268,8 @@ class Modulation {
         var isLogRange : Bool
         
         var auParameterKey : String
+        
+        var isBypassed : Bool = false
         
         init(auParameter: AUParameter, isLogRange: Bool = false){
             //self.auParameter = auParameter
@@ -159,7 +284,7 @@ class Modulation {
         
         /// gets the range amount to move from the anchor value
         func getModulationContribution(_ lookupValue: Float) -> Float {
-            return lookupValue * modulationMagnitude
+            return isBypassed ? 0.0 : lookupValue * modulationMagnitude
         }
         
         /// this validation prevents anchorValue + modulationMagnitude from leaving a 0 to 1 range
@@ -177,9 +302,10 @@ class Modulation {
     }
 }
 
+// MARK: LFOManager
 /// Connects to the audio chain (generates silence), updates the lookup value of many LFOs during each audio block, and provides a callback to let the modulation manager know it's time to update AU Parameter values
 fileprivate class LFOManager{
-
+    
     /// callback to let the modulation manager know it's time to update the AU Parameter values
     var lookupsCompleteHandler: () -> Void = {}
     
@@ -202,10 +328,6 @@ fileprivate class LFOManager{
     /// The sourceNode links into the audio chain and triggers the lookup value updates and subsequent callback to the modulation manager
     private lazy var sourceNode : AVAudioSourceNode = AVAudioSourceNode { silence, audioTimeStampPointer, frameCount, audioBufferList  in
         
-        // get new lfos here if there are some to get
-        // update lfos
-        // lets callback to modulation manager and let it handle this
-        
         let audioTimeStamp = audioTimeStampPointer.pointee
         
         if !self.hasStarted {
@@ -215,12 +337,12 @@ fileprivate class LFOManager{
         
         let realTime = audioTimeStamp.mSampleTime / self.sampleRate - self.startTime
         
-        //DispatchQueue.main.async {
-        for lfo in self.lfos {
-            lfo.calculateNextLookupValue(realTime)
+        ModulationManager.serialQueue.async {
+            for lfo in self.lfos {
+                lfo.calculateNextLookupValue(realTime)
+            }
+            self.lookupsCompleteHandler()
         }
-        self.lookupsCompleteHandler()
-        //}
         
         return noErr
     }
@@ -232,13 +354,16 @@ fileprivate class LFOManager{
     
     /// Convenient way to add a new LFO
     func addLFO(lfo: LFO) {
-        lfos.append(lfo)
+        ModulationManager.serialQueue.async {
+            self.lfos.append(lfo)
+        }
     }
     
 }
 
+// MARK: LFO
 /// Low frequency look up table oscillator
-class LFO {
+final class LFO {
     
     /// Pattern the LFO will follow
     var table: Table
@@ -246,16 +371,29 @@ class LFO {
     /// Current value that will be read from LFO by modulation
     var lookupValue : Float64 = 0
     
+    /// In order to maintain the phase after the frequency changes, we zero the time and shift the phase
+    private var phaseShift : Float = 0
+    
+    /// When a phase shift is applied after a frequency change, the time needs to be zero'd
+    private var resetTime : Double = 0
+    
+    /// Need to remember the phase
+    private var phase : Float = 0
+    
+    /// Need to remember the last time
+    private var rememberTime : Double = 0
+    
     /// Rate of oscillation
     var frequency : Float {
         didSet {
-            // this needs to only be set when we are not inside calulate next lookup value
             period = 1.0 / frequency
+            phaseShift = phase
+            resetTime = rememberTime
         }
     }
     
     /// Length of time for each oscillator
-    var period : Float
+    private var period : Float
 
     init(frequency: Float = 0.1, table: Table){
         self.frequency = frequency
@@ -264,13 +402,19 @@ class LFO {
     }
     
     /// updates the LFO value from the lookup table based on the current time
-    func calculateNextLookupValue(_ time: Float64) {
+    func calculateNextLookupValue(_ timeInput: Float64) {
+        
+        // do time keeping stuff
+        rememberTime = timeInput
+        let time = timeInput - resetTime
 
         // best to look at this value seperately as it is sometimes the cause of issues - when time gets too large things get weird
         let fMod = fmod(Float(time), period)
         
+        phase = fmod(fMod * frequency + phaseShift, 1.0)
+        
         // determine what value from table to use
-        let xVal : Float = fMod * Float(table.count-1) * frequency
+        let xVal : Float = phase * Float(table.count-1)
         
         if floor(xVal) == xVal {
             lookupValue = Float64(table.content[Int(xVal)])
@@ -289,6 +433,7 @@ class LFO {
                 newValue = 0
             }
             lookupValue = Float64(newValue)
+
         }
     }
 
