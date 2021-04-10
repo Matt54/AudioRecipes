@@ -45,6 +45,7 @@
 		4F81752625CC302C0023383D /* CustomOscillatorDSP.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */; };
 		4F81752E25CC39750023383D /* Numerics in Frameworks */ = {isa = PBXBuildFile; productRef = 4F81752D25CC39750023383D /* Numerics */; };
 		4F825E2525F475C80094F8C2 /* PrimitiveExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F825E2425F475C80094F8C2 /* PrimitiveExtensions.swift */; };
+		4F96A8A2261F9A8700AB835F /* ModulationAssignmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F96A8A1261F9A8700AB835F /* ModulationAssignmentView.swift */; };
 		4F9CAD3125DFEA2B00BEA393 /* CPHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */; };
 		4F9CAD3525E0A0D700BEA393 /* Marquee in Frameworks */ = {isa = PBXBuildFile; productRef = 4F9CAD3425E0A0D700BEA393 /* Marquee */; };
 		4FACB49225DB5DA600CF2370 /* WavetableHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */; };
@@ -52,6 +53,8 @@
 		4FAE450125FA57A800FC2A14 /* ModFrequencyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAE450025FA57A800FC2A14 /* ModFrequencyView.swift */; };
 		4FAE450825FA591300FC2A14 /* ModulationExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FAE450725FA591300FC2A14 /* ModulationExampleView.swift */; };
 		4FB053DF25D40DD500E6F450 /* RepeatingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FB053DE25D40DD500E6F450 /* RepeatingTimer.swift */; };
+		4FF08D76261E4A160000C58D /* ModulationDragView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF08D75261E4A160000C58D /* ModulationDragView.swift */; };
+		4FF08D79261E50A10000C58D /* DragAndDropItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF08D78261E50A10000C58D /* DragAndDropItem.swift */; };
 		4FF23FF925D2C2B1002EC8C1 /* WavetableArrayExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */; };
 		FA3827F925E353E6006C4377 /* RollingAudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */; };
 		FA3827FD25E35637006C4377 /* RollingAudioPlayerExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */; };
@@ -102,12 +105,15 @@
 		4F81752225CC2FF70023383D /* CustomOscillator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomOscillator.swift; sourceTree = "<group>"; };
 		4F81752525CC302C0023383D /* CustomOscillatorDSP.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomOscillatorDSP.mm; sourceTree = "<group>"; };
 		4F825E2425F475C80094F8C2 /* PrimitiveExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimitiveExtensions.swift; sourceTree = "<group>"; };
+		4F96A8A1261F9A8700AB835F /* ModulationAssignmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulationAssignmentView.swift; sourceTree = "<group>"; };
 		4F9CAD3025DFEA2B00BEA393 /* CPHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPHelpers.swift; sourceTree = "<group>"; };
 		4FACB49125DB5DA600CF2370 /* WavetableHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableHelpers.swift; sourceTree = "<group>"; };
 		4FACB49425DB659A00CF2370 /* AudioAnalysisHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAnalysisHelpers.swift; sourceTree = "<group>"; };
 		4FAE450025FA57A800FC2A14 /* ModFrequencyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModFrequencyView.swift; sourceTree = "<group>"; };
 		4FAE450725FA591300FC2A14 /* ModulationExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulationExampleView.swift; sourceTree = "<group>"; };
 		4FB053DE25D40DD500E6F450 /* RepeatingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatingTimer.swift; sourceTree = "<group>"; };
+		4FF08D75261E4A160000C58D /* ModulationDragView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModulationDragView.swift; sourceTree = "<group>"; };
+		4FF08D78261E50A10000C58D /* DragAndDropItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragAndDropItem.swift; sourceTree = "<group>"; };
 		4FF23FF825D2C2B1002EC8C1 /* WavetableArrayExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WavetableArrayExampleView.swift; sourceTree = "<group>"; };
 		FA3827F825E353E6006C4377 /* RollingAudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerView.swift; sourceTree = "<group>"; };
 		FA3827FC25E35637006C4377 /* RollingAudioPlayerExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RollingAudioPlayerExampleView.swift; sourceTree = "<group>"; };
@@ -335,6 +341,9 @@
 			children = (
 				4FAE450025FA57A800FC2A14 /* ModFrequencyView.swift */,
 				4FAE450725FA591300FC2A14 /* ModulationExampleView.swift */,
+				4FF08D75261E4A160000C58D /* ModulationDragView.swift */,
+				4FF08D78261E50A10000C58D /* DragAndDropItem.swift */,
+				4F96A8A1261F9A8700AB835F /* ModulationAssignmentView.swift */,
 			);
 			path = Modulation;
 			sourceTree = "<group>";
@@ -481,6 +490,7 @@
 				4F81750B25CC2EEA0023383D /* WavetableView.swift in Sources */,
 				4F81750E25CC2EFD0023383D /* WavetableExampleView.swift in Sources */,
 				4F9CAD3125DFEA2B00BEA393 /* CPHelpers.swift in Sources */,
+				4F96A8A2261F9A8700AB835F /* ModulationAssignmentView.swift in Sources */,
 				4F81752025CC2FCA0023383D /* customosc.c in Sources */,
 				4F21179525D5675A002DFB62 /* AudioFileExampleView.swift in Sources */,
 				4F8174CA25CC2C750023383D /* ContentView.swift in Sources */,
@@ -491,6 +501,8 @@
 				4FACB49225DB5DA600CF2370 /* WavetableHelpers.swift in Sources */,
 				4F81752325CC2FF80023383D /* CustomOscillator.swift in Sources */,
 				FAFB4C0225D22BDE00F64CB1 /* WavetableArrayView.swift in Sources */,
+				4FF08D76261E4A160000C58D /* ModulationDragView.swift in Sources */,
+				4FF08D79261E50A10000C58D /* DragAndDropItem.swift in Sources */,
 				4F8174C825CC2C750023383D /* AudioRecipesApp.swift in Sources */,
 				4F8174ED25CC2E110023383D /* AmplitudeView.swift in Sources */,
 				4F81750525CC2EA90023383D /* CircleCursorView.swift in Sources */,

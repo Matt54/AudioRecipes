@@ -58,6 +58,7 @@ class Conductor : ObservableObject{
     
     var modulationManager : ModulationManager
     var modulations: [Modulation] = []
+    var parameters: [AUParameter] = []
     
     //var modulation : ModulationPOC
     
@@ -159,6 +160,9 @@ class Conductor : ObservableObject{
         osc.amplitude = 0.1
         setupAmplitudeModulation(osc)
         
+        //modulationManager.selectedModulationIndex = 2
+        modulationManager.selectedModulationIndex = 1
+        
         //outputLimiter.preGain = -10
         //setupLimiterGainModulation(node: outputLimiter)
     }
@@ -202,7 +206,9 @@ class Conductor : ObservableObject{
         }
         guard let frequency = frequencyOptional else { return }
         
-        modulationManager.createModulation(frequency: 2, table: Table.init(.positiveSine), auParameter: frequency, isLogRange: true, parameterValue: 500, name: "Frequency Mod")
+        parameters.append(frequency)
+        
+        //modulationManager.createModulation(frequency: 2, table: Table.init(.positiveSine), auParameter: frequency, isLogRange: true, parameterValue: 500, name: "Frequency Mod")
     }
     
     func setupAmplitudeModulation(_ node: Node) {

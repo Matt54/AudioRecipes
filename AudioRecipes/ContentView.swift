@@ -32,18 +32,18 @@ struct ContentView: View {
                     Image(systemName: "waveform.path")
                     Text("Wavetable Array View")
                 }
-                NavigationLink(destination: AudioPlayerExampleView()){
+                /*NavigationLink(destination: AudioPlayerExampleView()){
                     Image(systemName: "waveform")
                     Text("Audio Player View")
                 }
                 NavigationLink(destination: RollingAudioPlayerExampleView()){
                     Image(systemName: "waveform")
                     Text("Rolling Audio Player View")
-                }
-                /*NavigationLink(destination: ModulationExampleView()){
+                }*/
+                NavigationLink(destination: ModulationExampleView()){
                     Image(systemName: "cursorarrow.click.badge.clock")
                     Text("Modulation View")
-                }*/
+                }
                 NavigationLink(destination: KnobExampleView()){
                     Image(systemName: "cursorarrow.click.badge.clock")
                     Text("Knob View")

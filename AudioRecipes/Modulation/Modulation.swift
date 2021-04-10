@@ -1,14 +1,23 @@
 import Foundation
 import AudioKit
 import AVFoundation
+import SwiftUI
 
-
-// MARK: ParameterInfo
+// MARK: ParameterModulationInfo
 /// things we need to remember about a AUParameter
-struct ParameterModulationInfo{
-    var anchorValue : Float // basically just the starting AUParameter.value before we modulate it (think position a knob is pointing)
+final class ParameterModulationInfo {
+    var anchorValue : Float // think position a knob is pointing
     var isLogRange : Bool
     var isBypassed : Bool
+    @Published var currentRangeValue : CGFloat
+    
+    init(anchorValue: Float, isLogRange: Bool, isBypassed: Bool){
+        self.anchorValue = anchorValue
+        self.currentRangeValue = CGFloat(anchorValue)
+        self.isLogRange = isLogRange
+        self.isBypassed = isBypassed
+    }
+    
 }
 
 // MARK: ModulationManager
@@ -20,7 +29,22 @@ final class ModulationManager : Node {
     var modulations : [Modulation] = []
     var auParameters : [AUParameter] = []
     
-    var newModulations : [Modulation] = []
+    @Published var isAssigningModulation : Bool = false
+    
+    // this is the modulation who's magnitude is displayed on the knobs
+    var selectedModulation : Modulation?
+    var selectedModulationIndex : Int = 0 {
+        didSet {
+            // needs to happen on modulation thread
+            ModulationManager.serialQueue.async {
+                self.selectedModulation = self.modulations[self.selectedModulationIndex]
+                //change modulation color here too after adding colors to modulations
+            }
+        }
+    }
+    var selectedModulationColor : Color = Color.yellow
+    
+    //var newModulations : [Modulation] = []
     var isUpdating : Bool = false
     var canUpdate : Bool = false
     
@@ -31,6 +55,20 @@ final class ModulationManager : Node {
         lfoManager = LFOManager(sampleRate: sampleRate)
         super.init(avAudioNode: lfoManager.getSourceNode())
         lfoManager.lookupsCompleteHandler = modulateMatrix
+        createDefaultModulation()
+    }
+    
+    func createDefaultModulation(frequency: Float = 1, magnitude: Float = 0, name: String = "") {
+        ModulationManager.serialQueue.async {
+            var modulationName = name
+            if name == "" {
+                modulationName = String(Modulation.modulationCount)
+            }
+            Modulation.modulationCount += 1
+            let modulation = Modulation(frequency: frequency, name: modulationName)
+            self.modulations.append(modulation)
+            self.selectedModulationIndex = Modulation.modulationCount - 1
+        }
     }
     
     func createModulation(frequency: Float, table: Table, auParameter: AUParameter, isLogRange: Bool = false, magnitude: Float = 0, name: String = "") {
@@ -45,7 +83,7 @@ final class ModulationManager : Node {
             self.modulations.append(modulation)
             let lfo = modulation.getLFO()
             self.lfoManager.addLFO(lfo: lfo)
-            self.addParameterToModulation(modulation: modulation, auParameter: auParameter)
+            self.addParameterToModulation(modulation: modulation, auParameter: auParameter, isLogRange: isLogRange)
             self.adjustMagnitudeForParameterModulation(modulation: modulation, auParameter: auParameter, newMagnitude: magnitude)
             ModulationManager.modulationHandoffHandler(modulation)
         }
@@ -63,7 +101,7 @@ final class ModulationManager : Node {
             self.modulations.append(modulation)
             let lfo = modulation.getLFO()
             self.lfoManager.addLFO(lfo: lfo)
-            self.addParameterToModulation(modulation: modulation, auParameter: auParameter)
+            self.addParameterToModulation(modulation: modulation, auParameter: auParameter, isLogRange: isLogRange)
             self.setModulationMagnitudeToParameterValue(modulation: modulation, auParameter: auParameter, parameterValue: parameterValue)
             ModulationManager.modulationHandoffHandler(modulation)
         }
@@ -128,7 +166,8 @@ final class ModulationManager : Node {
         ModulationManager.serialQueue.async {
             let modulation = self.modulations[modulationIndex]
             if let mod = modulation.targets.first(where: {$0.auParameterKey == auParameter.keyPath}) {
-                mod.modulationMagnitude = newMagnitude
+                //mod.modulationMagnitude = newMagnitude
+                mod.modulationMagnitude = mod.setModulationMagnitude(newMagnitude)
             }
         }
     }
@@ -161,6 +200,33 @@ final class ModulationManager : Node {
         }
     }
     
+    func adjustAnchorValue(_ auParameter: AUParameter, turnRatio: Float) {
+        ModulationManager.serialQueue.async {
+            if let parameterInfo = self.anchorValueDictionary[auParameter.keyPath] {
+                /*let newAnchorValue = self.calculateParameterValueFromRangeValue(turnRatio, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: parameterInfo.isLogRange)*/
+                parameterInfo.anchorValue = turnRatio
+            }
+        }
+    }
+    
+    func isParameterBeingModulated(_ auParameter: AUParameter) -> Bool {
+        self.anchorValueDictionary[auParameter.keyPath] != nil ? true : false
+        
+        /*if let parameterInfo = self.anchorValueDictionary[auParameter.keyPath] {
+            return true
+        } else {
+            return false
+        }*/
+    }
+    
+    func getAnchorValueForParameter(_ auParameter: AUParameter) -> Float {
+        if let parameterInfo = self.anchorValueDictionary[auParameter.keyPath] {
+            return parameterInfo.anchorValue
+        } else {
+            return 0.0
+        }
+    }
+    
     func modulateMatrix() {
         ModulationManager.serialQueue.async {
             for auParameter in self.auParameters {
@@ -172,7 +238,7 @@ final class ModulationManager : Node {
                             modValue += modulation.getModifierValueForParameter(auParameterKey: auParameter.keyPath)
                         }
                     }
-                    let rangeValue = parameterInfo.anchorValue + modValue
+                    let rangeValue = (parameterInfo.anchorValue + modValue).clamped(to: 0...1)
                     let parameterValue = self.calculateParameterValueFromRangeValue(rangeValue, min: auParameter.minValue, max: auParameter.maxValue, isLogRange: parameterInfo.isLogRange)
                     if auParameter.minValue > parameterValue {
                         auParameter.value = auParameter.minValue
@@ -181,6 +247,7 @@ final class ModulationManager : Node {
                     } else {
                         auParameter.value = parameterValue
                     }
+                    parameterInfo.currentRangeValue = CGFloat(rangeValue)
                 }
             }
         }
@@ -254,6 +321,14 @@ final class Modulation : ObservableObject {
         }
     }
     
+    func getModulationTargetForParameter(auParameterKey: String) -> ModulationTarget? {
+        if let modulationTarget = targets.first(where: {$0.auParameterKey == auParameterKey}){
+            return modulationTarget
+        } else {
+            return nil
+        }
+    }
+    
     // MARK: ModulationTarget
     final class ModulationTarget {
         /// 0 to 1.0 range
@@ -289,15 +364,7 @@ final class Modulation : ObservableObject {
         
         /// this validation prevents anchorValue + modulationMagnitude from leaving a 0 to 1 range
         func setModulationMagnitude(_ desiredModulationMagnitude: Float) -> Float {
-            if desiredModulationMagnitude + anchorValue >= 0 && desiredModulationMagnitude + anchorValue <= 1 {
-                return desiredModulationMagnitude
-            } else {
-                if desiredModulationMagnitude >= 0 {
-                    return 1.0 - anchorValue
-                } else {
-                    return anchorValue - 0.0
-                }
-            }
+            return desiredModulationMagnitude.clamped(to: -1.0...1.0)
         }
     }
 }

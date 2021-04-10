@@ -1,5 +1,11 @@
 import Foundation
 
+extension Comparable {
+    func clamped(to limits: ClosedRange<Self>) -> Self {
+        return min(max(self, limits.lowerBound), limits.upperBound)
+    }
+}
+
 extension Float {
     public func mappedExp(from source: ClosedRange<Float> = 0...1.0, to target: ClosedRange<Float> = 0...1.0) -> Float {
         
